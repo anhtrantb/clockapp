@@ -14,10 +14,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -30,13 +32,13 @@ public class FragmentAlarm extends Fragment {
     TextView title_collapsingbar_time,title_collapsingbar;
     RecyclerView recyclerViewAlarm;
     Toolbar mtoolbar;
-   private static FragmentAlarm fragmentAlarm;
-   public static FragmentAlarm getInstance(){
+    private static FragmentAlarm fragmentAlarm;
+    public static FragmentAlarm getInstance(){
        if(fragmentAlarm==null){
            fragmentAlarm = new FragmentAlarm();
        }
        return fragmentAlarm;
-   }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,8 +51,6 @@ public class FragmentAlarm extends Fragment {
         //main
         title_collapsingbar.setText("Chuông báo sau 18 giờ 1 phút");
         title_collapsingbar_time.setText("06:00, T.6, 29 Th1");
-//        CollapsingToolbarLayout collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar);
-//        collapsingToolbarLayout.setTitle("demo");
 
         ((MainActivity) getActivity()).setSupportActionBar(mtoolbar);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.alarm_ring));
@@ -80,6 +80,26 @@ public class FragmentAlarm extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         ((AppCompatActivity)getActivity()).getMenuInflater().inflate(R.menu.menu_toolbar,menu);
     }
+//xử lí menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ic_add:{
+                //Toast.makeText(getContext(), "hello", Toast.LENGTH_SHORT).show();break;
+            }
+            case R.id.ic_menu:{
+                //Toast.makeText(getContext(), "world", Toast.LENGTH_SHORT).show(); break;
+            }
+            case R.id.ic_delete:{
+
+            }
+            case R.id.ic_setting:{
+
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void findview(View view){
         mtoolbar = view.findViewById(R.id.toolbar);
         appBarLayout = view.findViewById(R.id.app_bar);

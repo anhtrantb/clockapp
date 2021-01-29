@@ -8,4 +8,6 @@
     <string name="count_down">Đếm giờ</string>
     <string name="alarm_ring">Chuông báo</string>
     <string name="title_alarm">Tất cả chuông báo đều tắt</string>
+    <string name="menu_delete">Xóa</string>
+    <string name="menu_setting">Cài đặt</string>
 </resources>
