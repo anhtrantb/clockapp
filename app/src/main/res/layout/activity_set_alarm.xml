@@ -1,0 +1,273 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="0dp">
+        <TimePicker
+            android:id="@+id/time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/time_picker"
+            android:timePickerMode="spinner" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5.2"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@drawable/bg_round_corner">
+        <RelativeLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txt_time_choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="demo"/>
+
+            <ImageButton
+                android:id="@+id/date_picker"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/calendar" />
+
+            <LinearLayout
+                android:id="@+id/linear_time_of_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_time_choice"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:paddingStart="-10dp"
+                android:paddingEnd="-10dp"
+                android:weightSum="7">
+
+                <TextView
+                    android:id="@+id/txt_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txt_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="3"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txt_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="4"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txt_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="5"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txt_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="6"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txt_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="7"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txt_cn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="C"
+                    android:textAlignment="center"
+                    android:textColor="@color/red" />
+            </LinearLayout>
+            <EditText
+                android:id="@+id/edt_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên chuông báo"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/linear_time_of_week"
+                />
+            <LinearLayout
+                android:id="@+id/line_test"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/edt_alarm">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_alarm_notifi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/text_title"
+                        android:text="@string/txt_alarm_notify"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tắt"
+                        style="@style/text_sub_title"
+                        android:layout_below="@+id/txt_alarm_notifi"/>
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="17dp"
+                        android:layout_toLeftOf="@id/sw_alarm_notify"
+                        android:layout_marginRight="5dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/black"/>
+                    <Switch
+                        android:id="@+id/sw_alarm_notify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/custom_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="#808080"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_vibrate"
+                        style="@style/text_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_vibrate"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tắt"
+                        style="@style/text_sub_title"
+                        android:layout_below="@id/txt_vibrate"/>
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="17dp"
+                        android:layout_toLeftOf="@id/sw_vibrate"
+                        android:layout_marginRight="5dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/black"/>
+
+                    <Switch
+                        android:id="@+id/sw_vibrate"
+                        style="@style/custom_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="#808080"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_pause"
+                        style="@style/text_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_pause"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tắt"
+                        style="@style/text_sub_title"
+                        android:layout_below="@id/txt_pause"/>
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="17dp"
+                        android:layout_toLeftOf="@+id/sw_pause"
+                        android:layout_marginRight="5dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/black"/>
+
+                    <Switch
+                        android:id="@+id/sw_pause"
+                        style="@style/custom_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@+id/line_test"
+                android:layout_height="50dp"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/txt_escape"
+            style="@style/text_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/txt_escape"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/txt_save"
+            style="@style/text_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/txt_save"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+</LinearLayout>

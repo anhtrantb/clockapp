@@ -1,5 +1,6 @@
 package com.example.clockapp;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -7,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -85,6 +87,8 @@ public class FragmentAlarm extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.ic_add:{
+                Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
+                startActivity(intent);
                 //Toast.makeText(getContext(), "hello", Toast.LENGTH_SHORT).show();break;
             }
             case R.id.ic_menu:{

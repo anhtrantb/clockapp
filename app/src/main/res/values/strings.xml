@@ -10,4 +10,9 @@
     <string name="title_alarm">Tất cả chuông báo đều tắt</string>
     <string name="menu_delete">Xóa</string>
     <string name="menu_setting">Cài đặt</string>
+    <string name="txt_escape">Thoát</string>
+    <string name="txt_save">Lưu</string>
+    <string name="txt_alarm_notify">Âm thanh thông báo</string>
+    <string name="txt_vibrate">Rung</string>
+    <string name="txt_pause">Tạm dừng</string>
 </resources>
