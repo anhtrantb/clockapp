@@ -15,4 +15,5 @@
     <string name="txt_alarm_notify">Âm thanh thông báo</string>
     <string name="txt_vibrate">Rung</string>
     <string name="txt_pause">Tạm dừng</string>
+    <string name="ringtone_choosen">"Nhạc chuông đã chọn"</string>
 </resources>

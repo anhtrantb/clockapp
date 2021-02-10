@@ -30,12 +30,14 @@
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/txt_time_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="demo"/>
+                android:text="demo"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <ImageButton
                 android:id="@+id/date_picker"
@@ -130,64 +132,79 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_below="@+id/edt_alarm">
+
                 <RelativeLayout
+                    android:id="@+id/layout_ringtone_sound"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/txt_alarm_notifi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         style="@style/text_title"
-                        android:text="@string/txt_alarm_notify"/>
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="tắt"
+                        android:text="@string/txt_alarm_notify"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tv_"
                         style="@style/text_sub_title"
-                        android:layout_below="@+id/txt_alarm_notifi"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_alarm_notifi"
+                        android:text="tắt" />
+
                     <View
                         android:layout_width="1px"
                         android:layout_height="17dp"
-                        android:layout_toLeftOf="@id/sw_alarm_notify"
-                        android:layout_marginRight="5dp"
                         android:layout_centerVertical="true"
-                        android:background="@color/black"/>
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@id/sw_ringtone_sound"
+                        android:background="@color/black" />
+
                     <Switch
-                        android:id="@+id/sw_alarm_notify"
+                        android:id="@+id/sw_ringtone_sound"
+                        style="@style/custom_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/custom_switch"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true" />
                 </RelativeLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    android:background="#808080"/>
+                    android:background="@color/line_divider_color" />
+
                 <RelativeLayout
+                    android:id="@+id/layout_vibrate_mode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
-                        android:id="@+id/txt_vibrate"
+                        android:id="@+id/txt_vibrate_mode"
                         style="@style/text_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/txt_vibrate"/>
+                        android:text="@string/txt_vibrate"
+                        android:textColor="@color/black" />
+
                     <TextView
+                        style="@style/text_sub_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="tắt"
-                        style="@style/text_sub_title"
-                        android:layout_below="@id/txt_vibrate"/>
+                        android:layout_below="@id/txt_vibrate_mode"
+                        android:text="tắt" />
+
                     <View
                         android:layout_width="1px"
                         android:layout_height="17dp"
-                        android:layout_toLeftOf="@id/sw_vibrate"
-                        android:layout_marginRight="5dp"
                         android:layout_centerVertical="true"
-                        android:background="@color/black"/>
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@id/sw_vibrate"
+                        android:background="@color/black" />
 
                     <Switch
                         android:id="@+id/sw_vibrate"
@@ -203,28 +220,34 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:background="#808080"/>
+
                 <RelativeLayout
+                    android:id="@+id/layout_pause_mode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
-                        android:id="@+id/txt_pause"
+                        android:id="@+id/txt_pause_mode"
                         style="@style/text_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/txt_pause"/>
+                        android:text="@string/txt_pause"
+                        android:textColor="@color/black" />
+
                     <TextView
+                        style="@style/text_sub_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="tắt"
-                        style="@style/text_sub_title"
-                        android:layout_below="@id/txt_pause"/>
+                        android:layout_below="@id/txt_pause_mode"
+                        android:text="tắt" />
+
                     <View
                         android:layout_width="1px"
                         android:layout_height="17dp"
-                        android:layout_toLeftOf="@+id/sw_pause"
-                        android:layout_marginRight="5dp"
                         android:layout_centerVertical="true"
-                        android:background="@color/black"/>
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/sw_pause"
+                        android:background="@color/black" />
 
                     <Switch
                         android:id="@+id/sw_pause"
@@ -251,7 +274,7 @@
         android:weightSum="2">
 
         <TextView
-            android:id="@+id/txt_escape"
+            android:id="@+id/tv_exit"
             style="@style/text_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -260,7 +283,7 @@
             android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/txt_save"
+            android:id="@+id/tv_save"
             style="@style/text_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

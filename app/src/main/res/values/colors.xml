@@ -9,12 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FB5043</color>
     <color name="secondary_color">#4A64F8</color>
-    <color name="background">#E6E6E6</color>
+    <color name="background">#EBEBEB</color>
     <color name="item_background">#F0F0F0</color>
-    <color name="background_light">#F5F5F5</color>
+    <color name="background_light">#EEEEEE</color>
     <color name="item_background_border">#A8A8A8</color>
     <color name="tab_text_normal">#8E8B8B</color>
     <color name="tab_text_select">#3955EF</color>
     <color name="switch_on_color">#6578E6</color>
     <color name="popup_menu_background_color">#F5F5F5</color>
+    <color name="line_divider_color">#A6A4A4</color>
 </resources>
