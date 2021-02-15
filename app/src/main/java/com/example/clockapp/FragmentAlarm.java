@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +30,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 
-public class FragmentAlarm extends Fragment {
+public class FragmentAlarm extends Fragment  {
     LinearLayout linearLayout;
     AppBarLayout appBarLayout;
     TextView title_collapsingbar_time,title_collapsingbar;
@@ -88,7 +90,7 @@ public class FragmentAlarm extends Fragment {
         switch (item.getItemId()){
             case R.id.ic_add:{
                 Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
-                startActivity(intent);
+                getParentFragment().startActivityForResult(intent,111);
                 //Toast.makeText(getContext(), "hello", Toast.LENGTH_SHORT).show();break;
             }
             case R.id.ic_menu:{
@@ -111,5 +113,12 @@ public class FragmentAlarm extends Fragment {
         title_collapsingbar_time = view.findViewById(R.id.title_collapsingbar_time);
         title_collapsingbar = view.findViewById(R.id.title_collapsingbar);
         recyclerViewAlarm = view.findViewById(R.id.recycleview_alarm);
+    }
+    //hàm được gọi khi nhận giá trị từ màn setalarm
+    public void updateData(Intent data){
+        Alarm alarm = (Alarm) data.getSerializableExtra("data");
+        if(alarm!=null){
+            Log.e("tagg", String.valueOf(alarm.getTime().getHour()));
+        }
     }
 }

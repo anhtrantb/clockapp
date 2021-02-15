@@ -16,4 +16,13 @@
     <string name="txt_vibrate">Rung</string>
     <string name="txt_pause">Tạm dừng</string>
     <string name="ringtone_choosen">"Nhạc chuông đã chọn"</string>
+    <string-array name="day_of_week">
+        <item>"2"</item>
+        <item>"3"</item>
+        <item>"4"</item>
+        <item>"5"</item>
+        <item>"6"</item>
+        <item>"7"</item>
+        <item>"C"</item>
+    </string-array>
 </resources>

@@ -1,6 +1,8 @@
 package com.example.clockapp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,12 +21,11 @@ import com.google.android.material.tabs.TabLayoutMediator;
 //fragment hiển thị giao diện chính cho toàn bộ ứng dụng
 public class FragmentViewPager extends Fragment {
     ViewPager2 viewPager;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_pager, container, false);
-        ViewPager2 viewPager = view.findViewById(R.id.pager);
+        viewPager = view.findViewById(R.id.pager);
         //thiết lập adapter cho viewpager
         AdapterFragment adapterFragment = new AdapterFragment(this);
         viewPager.setAdapter(adapterFragment);
@@ -79,6 +80,15 @@ public class FragmentViewPager extends Fragment {
         ).attach();
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==111 && resultCode== Activity.RESULT_OK){
+            FragmentAlarm frag = (FragmentAlarm) getChildFragmentManager().getFragments().get(viewPager.getCurrentItem());
+            frag.updateData(data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 

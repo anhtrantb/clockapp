@@ -63,26 +63,11 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
         swReadLoudTime = findViewById(R.id.sw_read_loud_time);
     }
 
-    public Map<String, String> getRingTone() {
-        RingtoneManager manager = new RingtoneManager(this);
-        //lấy toàn bộ ringtone trong máy
-        manager.setType(RingtoneManager.TYPE_RINGTONE);
-        //con trỏ duyệt
-        Cursor cursor = manager.getCursor();
-        Map<String, String> list = new HashMap<>();
-        while (cursor.moveToNext()) {
-            String notificationTitle = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
-            String notificationUri = cursor.getString(RingtoneManager.URI_COLUMN_INDEX) + "/" +
-                    cursor.getString(RingtoneManager.ID_COLUMN_INDEX);
-            list.put(notificationTitle, notificationUri);
-        }
-        return list;
-    }
     public void getListRingtone(){
         /*hàm lấy toàn bộ chuông báo của máy
         sắp xếp theo tên nhạc chuông
         lấy tên và uri của bài hát*/
-        Map<String, String> map = getRingTone();
+        Map<String, String> map = RingTone.getRingTone(this);
         Set<String> keySet = map.keySet();
         for(String key:keySet){
             listRingtone.add(new ItemSelect(key, map.get(key)));
