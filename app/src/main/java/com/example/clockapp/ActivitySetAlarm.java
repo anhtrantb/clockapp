@@ -10,12 +10,12 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -26,18 +26,17 @@ import android.widget.Toast;
 import com.example.clockapp.Base.ItemViewClickListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ActivitySetAlarm extends AppCompatActivity implements ItemViewClickListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterDayOfWeek.onClickDayListener {
 TimePicker timePicker;
 TextView mTvExit, mTvSave, mTvRingtone, mTvVibrate, mTvPause;
+EditText mEdtTitle;
 ImageButton mDatePicker;
 Switch mSwitchRingtoneSound, mSwitchVibrate, mSwitchPause;
 RecyclerView recycleDayOfWeek;
 AdapterDayOfWeek adapterDayOfWeek;
 List<ItemDay> listDay = new ArrayList<>();
-private  int CODE_SET_RINGTONE = 2;
 RelativeLayout layoutRingtoneSound, layoutVibrateMode, layoutPauseMode;
 Alarm alarm = new Alarm();
 Time time = new Time();
@@ -91,37 +90,33 @@ Time time = new Time();
         layoutPauseMode = findViewById(R.id.layout_pause_mode);
         layoutVibrateMode = findViewById(R.id.layout_vibrate_mode);
         recycleDayOfWeek = findViewById(R.id.recycle_day_of_week);
+        mEdtTitle = findViewById(R.id.edt_title_alarm);
         //text hiển thị cài đặt
         mTvRingtone = findViewById(R.id.tv_ringtone);
         mTvVibrate = findViewById(R.id.tv_vibrate);
         mTvPause = findViewById(R.id.tv_pause);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.date_picker:{
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                            time.setDay(dayOfMonth);
-                            time.setMonth(month);
-                            time.setYear(year);
-                        }
-                    },2021,2,2);
-                datePickerDialog.show();
+                displayDatePicker();
                 break;
             }
             case R.id.layout_ringtone_sound:
                 Intent intent = new Intent(this, ActivityRingtoneSound.class);
                 intent.putExtra(StaticName.SOUND_TITLE,alarm.getSoundTitle()==null ? RingTone.getFirst(this): alarm.getSoundTitle());
-                startActivityForResult(intent, CODE_SET_RINGTONE);
+                startActivityForResult(intent, StaticName.CODE_SET_RINGTONE);
                 break;
             case R.id.layout_vibrate_mode:
-                jumpToActivity(this,ActivityVibrateMode.class);break;
-
+                Intent intentVibrateActivity = new Intent(this, ActivityVibrateMode.class);
+                //gửi đi tên của chế độ rung
+                intentVibrateActivity.putExtra("isSwitchOn",mSwitchVibrate.isChecked());
+                intentVibrateActivity.putExtra(StaticName.VIBRATE_MODE,alarm.getVibrateMode()==null ? (new VibratePattern().getFirst()): alarm.getVibrateMode());
+                startActivityForResult(intentVibrateActivity, StaticName.CODE_SET_VIBRATE);
+                break;
             case R.id.layout_pause_mode:
                 jumpToActivity(this, ActivityPauseMode.class);break;
             case R.id.tv_save:
@@ -139,7 +134,9 @@ Time time = new Time();
                 }else mTvRingtone.setText("Tắt");
             }
             case R.id.sw_vibrate:{
-
+                if(mSwitchVibrate.isChecked()){
+                    mTvVibrate.setText(alarm.getVibrateMode()==null ? new VibratePattern().getFirst(): alarm.getVibrateMode());
+                }else mTvVibrate.setText("Tắt");
             }
             case R.id.sw_pause:{
 
@@ -154,7 +151,7 @@ Time time = new Time();
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CODE_SET_RINGTONE){
+        if(requestCode == StaticName.CODE_SET_RINGTONE){
             if(resultCode== Activity.RESULT_OK){
                 //title
                 String titleSong = data.getStringExtra(StaticName.SOUND_TITLE);
@@ -162,6 +159,14 @@ Time time = new Time();
                 alarm.setSoundTitle(titleSong);
                 alarm.setSoundUri(data.getStringExtra(StaticName.SOUND_URI));
                 alarm.setHasReadLoudTime(data.getBooleanExtra(StaticName.HAS_READ_LOUD,true));
+            }
+        }
+        else if(requestCode==StaticName.CODE_SET_VIBRATE){
+            if(resultCode == Activity.RESULT_OK && data!=null){
+                String vibrate_mode_rececived = data.getStringExtra(StaticName.VIBRATE_MODE);
+                mSwitchVibrate.setChecked(data.getBooleanExtra("switchVibrateStatus",false));
+                mTvVibrate.setText(vibrate_mode_rececived);
+                alarm.setVibrateMode(vibrate_mode_rececived);
             }
         }
     }
@@ -175,20 +180,44 @@ Time time = new Time();
             view.setBackgroundResource(R.drawable.round_txt);
             listDay.get(position).setChecked(true);
         }
-        Toast.makeText(this, String.valueOf(position), Toast.LENGTH_SHORT).show();
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void saveAlarm(){
+        //giờ phút
         time.setHour(timePicker.getHour());
         time.setMinute(timePicker.getMinute());
-
+        //tên báo thức
+        alarm.setName(mEdtTitle.getText().toString());
         alarm.setTime(time);
+        //các chế độ cài đặt
         alarm.setHasSound(mSwitchRingtoneSound.isChecked());
         alarm.setHasVibrate(mSwitchVibrate.isChecked());
         alarm.setHasPause(mSwitchPause.isChecked());
+        //ngày trong tuần
+        alarm.setListDaySet(getListDayIsChecked());
+        //gửi kết quả về màn chính
         Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("data",alarm);
         setResult(Activity.RESULT_OK,intent);
         finish();
+    }
+    public ArrayList<String> getListDayIsChecked(){
+        ArrayList<String> listDayIsChecked = new ArrayList<>();
+        for(ItemDay itemDay : listDay){
+            if(itemDay.isChecked())
+                listDayIsChecked.add(itemDay.getDay());
+        }
+        return listDayIsChecked;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void displayDatePicker(){
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year, month, dayOfMonth) -> {
+                    time.setDay(dayOfMonth);
+                    time.setMonth(month);
+                    time.setYear(year);
+                },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
+        datePickerDialog.show();
     }
 }

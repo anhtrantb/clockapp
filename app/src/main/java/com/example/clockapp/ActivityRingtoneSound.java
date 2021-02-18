@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -20,12 +18,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ActivityRingtoneSound extends AppCompatActivity implements AdapterSelectItem.OnRingtoneListener {
+public class ActivityRingtoneSound extends AppCompatActivity implements AdapterSelectItem.OnItemRadioCheck {
     Toolbar toolbar;
     RecyclerView recycleRingtone;
     Switch swReadLoudTime;
@@ -45,15 +42,7 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         //recycle ringtone
         getListRingtone();
-        positionChecked = getDefautSelectPosition();
-        if(positionChecked==-1){
-            listRingtone.get(0).setChecked(true);//cho 0 là vị trí mặc định
-            positionChecked = 0;
-        }else{
-            listRingtone.get(positionChecked).setChecked(true);
-        }
-
-        adapterSelectItem = new AdapterSelectItem(listRingtone,this);
+        adapterSelectItem = new AdapterSelectItem(listRingtone,this,getDefautSelectPosition());
         recycleRingtone.setAdapter(adapterSelectItem);
         recycleRingtone.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -94,14 +83,9 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
     }
 
     @Override
-    public void onRingtoneClick(int position) {
-        if(position != positionChecked){
+    public void onItemRadioChecked(int position) {
+        positionChecked = position;
             mediaPlayer.stop();
-            //thay đổi trạng thái của radiobutton
-            listRingtone.get(positionChecked).setChecked(false);
-            listRingtone.get(position).setChecked(true);
-            positionChecked = position;
-            adapterSelectItem.notifyDataSetChanged();
             //phát nhạc khi click item
             mediaPlayer.reset();
             try {
@@ -112,7 +96,6 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     @Override

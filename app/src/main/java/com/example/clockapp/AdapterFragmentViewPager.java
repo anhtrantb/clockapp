@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class AdapterFragment extends FragmentStateAdapter {
-    public AdapterFragment(@NonNull Fragment fragment) {
+public class AdapterFragmentViewPager extends FragmentStateAdapter {
+    public AdapterFragmentViewPager(@NonNull Fragment fragment) {
         super(fragment);
     }
     @NonNull

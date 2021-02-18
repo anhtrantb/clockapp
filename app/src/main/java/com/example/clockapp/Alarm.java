@@ -2,16 +2,18 @@ package com.example.clockapp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Alarm implements Serializable {
      Time time;//thời gian
      String name;
+     boolean TurnOn;//được bật hay không
 
      String soundTitle;
      String soundUri;
      boolean hasSound;
 
-     int vibrateMode;
+     String vibrateMode;
      boolean hasVibrate;
 
      int pauseTime;
@@ -20,7 +22,6 @@ public class Alarm implements Serializable {
 
      boolean hasReadLoudTime;
      ArrayList<String> listDaySet;
-     boolean isSet;//được bật hay không
 
      public Time getTime() {
           return time;
@@ -54,13 +55,6 @@ public class Alarm implements Serializable {
           this.soundUri = soundUri;
      }
 
-     public int getVibrateMode() {
-          return vibrateMode;
-     }
-
-     public void setVibrateMode(int vibrateMode) {
-          this.vibrateMode = vibrateMode;
-     }
 
      public int getPauseTime() {
           return pauseTime;
@@ -102,13 +96,6 @@ public class Alarm implements Serializable {
           this.listDaySet = listDaySet;
      }
 
-     public boolean isSet() {
-          return isSet;
-     }
-
-     public void setSet(boolean set) {
-          isSet = set;
-     }
 
      public boolean isHasVibrate() {
           return hasVibrate;
@@ -124,5 +111,21 @@ public class Alarm implements Serializable {
 
      public void setHasPause(boolean hasPause) {
           this.hasPause = hasPause;
+     }
+
+     public boolean isTurnOn() {
+          return TurnOn;
+     }
+
+     public void setTurnOn(boolean turnOn) {
+          TurnOn = turnOn;
+     }
+
+     public String getVibrateMode() {
+          return vibrateMode;
+     }
+
+     public void setVibrateMode(String vibrateMode) {
+          this.vibrateMode = vibrateMode;
      }
 }

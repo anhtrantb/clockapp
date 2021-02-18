@@ -17,12 +17,19 @@
     <string name="txt_pause">Tạm dừng</string>
     <string name="ringtone_choosen">"Nhạc chuông đã chọn"</string>
     <string-array name="day_of_week">
-        <item>"2"</item>
-        <item>"3"</item>
-        <item>"4"</item>
-        <item>"5"</item>
-        <item>"6"</item>
-        <item>"7"</item>
-        <item>"C"</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>C</item>
+    </string-array>
+    <string-array name="list_name_vibrate_mode">
+        <item>Basic call</item>
+        <item>Heartbeat</item>
+        <item>Ticktock</item>
+        <item>Waltz</item>
+        <item>Zig-zig-zig</item>
     </string-array>
 </resources>

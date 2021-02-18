@@ -1,17 +1,14 @@
 package com.example.clockapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -27,7 +24,7 @@ public class FragmentViewPager extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_pager, container, false);
         viewPager = view.findViewById(R.id.pager);
         //thiết lập adapter cho viewpager
-        AdapterFragment adapterFragment = new AdapterFragment(this);
+        AdapterFragmentViewPager adapterFragment = new AdapterFragmentViewPager(this);
         viewPager.setAdapter(adapterFragment);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         //custom tablayout
@@ -84,7 +81,7 @@ public class FragmentViewPager extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode==111 && resultCode== Activity.RESULT_OK){
+        if(requestCode==StaticName.CODE_ADD_ALARM && resultCode== Activity.RESULT_OK){
             FragmentAlarm frag = (FragmentAlarm) getChildFragmentManager().getFragments().get(viewPager.getCurrentItem());
             frag.updateData(data);
         }

@@ -1,20 +1,15 @@
 package com.example.clockapp;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,16 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 
-public class FragmentAlarm extends Fragment  {
+public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmListener {
     LinearLayout linearLayout;
     AppBarLayout appBarLayout;
     TextView title_collapsingbar_time,title_collapsingbar;
     RecyclerView recyclerViewAlarm;
     Toolbar mtoolbar;
+
+    ArrayList<Alarm> listAlarm = new ArrayList<>();
+    AdapterAlarm mAdapterAlarm;
     private static FragmentAlarm fragmentAlarm;
     public static FragmentAlarm getInstance(){
        if(fragmentAlarm==null){
@@ -64,17 +61,16 @@ public class FragmentAlarm extends Fragment  {
             linearLayout.setAlpha(1- 2 * percentage);
         });
         //hiển thị recycle view
-        ArrayList<ItemAlarm> alarmArrayList = new ArrayList<>();
-        alarmArrayList.add(new ItemAlarm("06:00","T6, 29 Th1",true));
-        alarmArrayList.add(new ItemAlarm("06:00","T6, 29 Th1",false));
-        alarmArrayList.add(new ItemAlarm("06:00","T6, 29 Th1",true));
-        alarmArrayList.add(new ItemAlarm("06:00","T6, 29 Th1",false));
-        alarmArrayList.add(new ItemAlarm("06:00","T6, 29 Th1",true));
-        alarmArrayList.add(new ItemAlarm("06:00","T6, 29 Th1",false));
+        Alarm testAlarm = new Alarm();
+        testAlarm.setTurnOn(true);
+        Time testTime = new Time();
+        testAlarm.setTime(testTime);
+        listAlarm.add(testAlarm);
+        listAlarm.add(testAlarm);
 
-        AdapterRecycleView adapterRecycleView = new AdapterRecycleView(getContext(),alarmArrayList);
+        mAdapterAlarm = new AdapterAlarm(listAlarm,this);
         recyclerViewAlarm.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewAlarm.setAdapter(adapterRecycleView);
+        recyclerViewAlarm.setAdapter(mAdapterAlarm);
 
         return view;
     }
@@ -90,8 +86,7 @@ public class FragmentAlarm extends Fragment  {
         switch (item.getItemId()){
             case R.id.ic_add:{
                 Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
-                getParentFragment().startActivityForResult(intent,111);
-                //Toast.makeText(getContext(), "hello", Toast.LENGTH_SHORT).show();break;
+                getParentFragment().startActivityForResult(intent,StaticName.CODE_ADD_ALARM);
             }
             case R.id.ic_menu:{
                 //Toast.makeText(getContext(), "world", Toast.LENGTH_SHORT).show(); break;
@@ -116,9 +111,16 @@ public class FragmentAlarm extends Fragment  {
     }
     //hàm được gọi khi nhận giá trị từ màn setalarm
     public void updateData(Intent data){
-        Alarm alarm = (Alarm) data.getSerializableExtra("data");
-        if(alarm!=null){
-            Log.e("tagg", String.valueOf(alarm.getTime().getHour()));
+        if(data!=null){
+            Alarm alarm = (Alarm) data.getSerializableExtra("data");
+            //thêm một báo thức vào trong list
+            listAlarm.add(alarm);
+            mAdapterAlarm.notifyItemInserted(listAlarm.size()-1);
         }
+    }
+
+    @Override
+    public void onItemAlarmClickListener(int position) {
+        Toast.makeText(getContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
     }
 }
