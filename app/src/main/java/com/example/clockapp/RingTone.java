@@ -30,4 +30,14 @@ public class RingTone {
         cursor.moveToFirst();
         return cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
     }
+    public static SoundMode getFirstSong(Context context){
+        RingtoneManager manager = new RingtoneManager(context);
+        manager.setType(RingtoneManager.TYPE_RINGTONE);
+        Cursor cursor = manager.getCursor();
+        cursor.moveToFirst();
+        SoundMode soundMode = new SoundMode();
+        soundMode.setSoundTitle(cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX));
+        soundMode.setSoundUri(cursor.getString(RingtoneManager.ID_COLUMN_INDEX));
+        return  soundMode;
+    }
 }

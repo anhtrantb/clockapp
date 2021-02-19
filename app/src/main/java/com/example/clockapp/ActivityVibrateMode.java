@@ -7,14 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -29,7 +28,8 @@ LinearLayout layoutRecycleVibrate;
 RelativeLayout layoutSwitch;
 Switch swSetVibrate;
 Toolbar toolbar;
-int positionChecked;
+TextView tvStatusSwitch;
+VibrateMode vibrateMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +39,15 @@ int positionChecked;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        initRecycleVibrate(getIntent().getStringExtra(StaticName.VIBRATE_MODE));
-        adapterVibrate = new AdapterSelectItem(listVibrateMode,this,positionChecked);
+        //lấy dữ liệu
+        vibrateMode = (VibrateMode) getIntent().getSerializableExtra("vibrate_mode");
+        initRecycleVibrate(vibrateMode.getName());
+        adapterVibrate = new AdapterSelectItem(listVibrateMode,this,getPositionChecked());
         recycleVibrate.setAdapter(adapterVibrate);
         recycleVibrate.setLayoutManager(new LinearLayoutManager(this));
         swSetVibrate.setOnCheckedChangeListener(this);
-        swSetVibrate.setChecked(getIntent().getBooleanExtra("isSwitchOn",false));
-        displayRecycleViewWithSwitch();
+        swSetVibrate.setChecked(vibrateMode.isTurnOn());
+        switchChanged();
     }
     public void initView(){
         recycleVibrate = findViewById(R.id.recycle_vibrate);
@@ -53,18 +55,19 @@ int positionChecked;
         swSetVibrate = findViewById(R.id.sw_set_vibrate);
         layoutRecycleVibrate = findViewById(R.id.layout_recycle_vibrate);
         layoutSwitch = findViewById(R.id.layout_switch);
+        tvStatusSwitch = findViewById(R.id.tv_status_switch);
     }
 
     @Override
     public void onItemRadioChecked(int position) {
-        positionChecked = position;
+
     }
     public void initRecycleVibrate(String defaulPattern){
         String[] listNameVibrateMode= getResources().getStringArray(R.array.list_name_vibrate_mode);
         for(int i=0;i<listNameVibrateMode.length;i++){
             listVibrateMode.add(new ItemSelect(listNameVibrateMode[i]));
             if(listNameVibrateMode[i].trim().equals(defaulPattern)) {
-                positionChecked = i;
+                listVibrateMode.get(i).setChecked(true);
             }
         }
 
@@ -84,26 +87,37 @@ int positionChecked;
     }
     public void saveSelectVibrate(){
         Intent intent = new Intent();
-        String valueSend  = getResources().getStringArray(R.array.list_name_vibrate_mode)[positionChecked];
-        intent.putExtra(StaticName.VIBRATE_MODE,valueSend);
-        intent.putExtra("switchVibrateStatus",swSetVibrate.isChecked());
+        String valueSend  = getResources().getStringArray(R.array.list_name_vibrate_mode)[getPositionChecked()];
+        vibrateMode.setName(valueSend);
+        vibrateMode.setTurnOn(swSetVibrate.isChecked());
+        vibrateMode.setPattern(new VibratePattern().getList().get(valueSend));
+        intent.putExtra("vibrate_mode",vibrateMode);
         setResult(Activity.RESULT_OK,intent);
         finish();
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        displayRecycleViewWithSwitch();
+        switchChanged();
     }
-    public void displayRecycleViewWithSwitch(){
+    public void switchChanged(){
         if(swSetVibrate.isChecked()){
+            tvStatusSwitch.setText("Bật");
             adapterVibrate.setItemClickable(true);
             layoutRecycleVibrate.setAlpha(1f);
             layoutSwitch.setBackground(getResources().getDrawable(R.drawable.bg_round_color_blue));
         }else{
+            tvStatusSwitch.setText("Tắt");
             adapterVibrate.setItemClickable(false);
             layoutRecycleVibrate.setAlpha(0.3f);
             layoutSwitch.setBackground(getResources().getDrawable(R.drawable.bg_round_corner));
         }
+    }
+    public int getPositionChecked(){
+        for(int i=0;i<listVibrateMode.size();i++){
+            if(listVibrateMode.get(i).isChecked())
+                return i;
+        }
+        return -1;
     }
 }

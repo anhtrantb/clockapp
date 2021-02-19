@@ -1,6 +1,12 @@
 package com.example.clockapp;
 
+import android.icu.util.Calendar;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class Time implements Serializable {
     private int hour;
@@ -10,6 +16,11 @@ public class Time implements Serializable {
     private int day;
     private int month;
     private int year;
+    public Time(){}
+    public Time(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
 
     private String dayOfWeek;
 
@@ -67,5 +78,8 @@ public class Time implements Serializable {
 
     public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+    public String displayDate(){
+        return this.dayOfWeek+", "+this.day+" Th"+this.month;
     }
 }

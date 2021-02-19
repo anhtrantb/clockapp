@@ -24,6 +24,7 @@ public class AdapterSelectItem  extends RecyclerView.Adapter<AdapterSelectItem.V
         this.listItem = listItem;
         this.positionChecked = positionChecked;
         this.mOnRingtoneListener = mOnRingtoneListener;
+        listItem.get(positionChecked).setChecked(true);
     }
 
     private OnItemRadioCheck mOnRingtoneListener;

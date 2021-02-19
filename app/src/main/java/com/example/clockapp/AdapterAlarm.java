@@ -36,8 +36,9 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Alarm alarm = listItem.get(position);
         holder.mTx_Time.setText(alarm.getTime().getHour()+":"+alarm.getTime().getMinute());
-        holder.mTx_Date.setText(alarm.getTime().getDay()+"/"+alarm.getTime().getMonth());
+        holder.mTx_Date.setText(alarm.getTime().displayDate());
         holder.mSw_setAlarm.setChecked(alarm.isTurnOn());
+        holder.mTvAlarmName.setText(alarm.getName());
     }
 
     @Override
@@ -46,7 +47,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTx_Time,mTx_Date;
+        TextView mTx_Time,mTx_Date, mTvAlarmName;
         Switch mSw_setAlarm;
         final float  alphaTextView = 0.35f;
         ItemAlarmListener mListener;
@@ -55,6 +56,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
             mTx_Time = itemView.findViewById(R.id.tx_time);
             mTx_Date = itemView.findViewById(R.id.tx_date);
             mSw_setAlarm = itemView.findViewById(R.id.sw_setAlarm);
+            mTvAlarmName= itemView.findViewById(R.id.name_alarm);
             setAlphaTextView(alphaTextView);
             this.mListener = mListener;
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +70,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     //set độ mờ cho text view
                     setAlphaTextView(alphaTextView);
+                    listItem.get(getAdapterPosition()).setTurnOn(isChecked);
                 }
             });
         }

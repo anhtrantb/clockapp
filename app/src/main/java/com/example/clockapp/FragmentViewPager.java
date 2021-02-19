@@ -81,10 +81,8 @@ public class FragmentViewPager extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode==StaticName.CODE_ADD_ALARM && resultCode== Activity.RESULT_OK){
-            FragmentAlarm frag = (FragmentAlarm) getChildFragmentManager().getFragments().get(viewPager.getCurrentItem());
-            frag.updateData(data);
-        }
+        FragmentAlarm frag = (FragmentAlarm) getChildFragmentManager().getFragments().get(viewPager.getCurrentItem());
+        frag.onActivityResult(requestCode,resultCode,data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.clockapp.Base.ItemViewClickListener;
 
@@ -38,7 +37,7 @@ RecyclerView recycleDayOfWeek;
 AdapterDayOfWeek adapterDayOfWeek;
 List<ItemDay> listDay = new ArrayList<>();
 RelativeLayout layoutRingtoneSound, layoutVibrateMode, layoutPauseMode;
-Alarm alarm = new Alarm();
+Alarm alarm ;
 Time time = new Time();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,8 @@ Time time = new Time();
         mSwitchVibrate.setOnCheckedChangeListener(this);
         mSwitchPause.setOnCheckedChangeListener(this);
 
-
+        alarm = (Alarm) getIntent().getSerializableExtra("alarm");
+        updateData();
         String day[] = getResources().getStringArray(R.array.day_of_week);
         for(int i=0;i<day.length;i++){
             listDay.add(new ItemDay(day[i]));
@@ -106,19 +106,22 @@ Time time = new Time();
                 break;
             }
             case R.id.layout_ringtone_sound:
-                Intent intent = new Intent(this, ActivityRingtoneSound.class);
-                intent.putExtra(StaticName.SOUND_TITLE,alarm.getSoundTitle()==null ? RingTone.getFirst(this): alarm.getSoundTitle());
-                startActivityForResult(intent, StaticName.CODE_SET_RINGTONE);
+                Intent intentRingtoneActivity = new Intent(this, ActivityRingtoneSound.class);
+                intentRingtoneActivity.putExtra("sound_mode",alarm.getSoundMode());
+                startActivityForResult(intentRingtoneActivity, StaticName.CODE_SET_RINGTONE);
                 break;
             case R.id.layout_vibrate_mode:
                 Intent intentVibrateActivity = new Intent(this, ActivityVibrateMode.class);
-                //gửi đi tên của chế độ rung
-                intentVibrateActivity.putExtra("isSwitchOn",mSwitchVibrate.isChecked());
-                intentVibrateActivity.putExtra(StaticName.VIBRATE_MODE,alarm.getVibrateMode()==null ? (new VibratePattern().getFirst()): alarm.getVibrateMode());
+                alarm.getVibrateMode().setTurnOn(mSwitchVibrate.isChecked());
+                intentVibrateActivity.putExtra("vibrate_mode",alarm.getVibrateMode());
                 startActivityForResult(intentVibrateActivity, StaticName.CODE_SET_VIBRATE);
                 break;
             case R.id.layout_pause_mode:
-                jumpToActivity(this, ActivityPauseMode.class);break;
+                Intent intentPauseActivity = new Intent(this, ActivityPauseMode.class);
+                alarm.getPauseMode().setTurnOn(mSwitchPause.isChecked());
+                intentPauseActivity.putExtra("pause_mode",alarm.getPauseMode());
+                startActivityForResult(intentPauseActivity,StaticName.CODE_SET_PAUSE);
+                break;
             case R.id.tv_save:
                 saveAlarm(); break;
         }
@@ -130,22 +133,22 @@ Time time = new Time();
         switch (buttonView.getId()){
             case R.id.sw_ringtone_sound:{
                 if(mSwitchRingtoneSound.isChecked()){
-                    mTvRingtone.setText(alarm.getSoundTitle()==null ? RingTone.getFirst(this): alarm.getSoundTitle());
+                    mTvRingtone.setText(alarm.getSoundMode().getSoundTitle());
                 }else mTvRingtone.setText("Tắt");
             }
             case R.id.sw_vibrate:{
                 if(mSwitchVibrate.isChecked()){
-                    mTvVibrate.setText(alarm.getVibrateMode()==null ? new VibratePattern().getFirst(): alarm.getVibrateMode());
+                    mTvVibrate.setText(alarm.getVibrateMode().getName());
                 }else mTvVibrate.setText("Tắt");
             }
             case R.id.sw_pause:{
-
+                if(mSwitchPause.isChecked()){
+                    mTvPause.setText(alarm.getPauseMode().display());
+                }else{
+                    mTvPause.setText("Tắt");
+                }
             }
         }
-    }
-    public void jumpToActivity(Context context, Class cls){
-        Intent intent = new Intent(context, cls);
-        startActivity(intent);
     }
 
     @Override
@@ -153,20 +156,29 @@ Time time = new Time();
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == StaticName.CODE_SET_RINGTONE){
             if(resultCode== Activity.RESULT_OK){
-                //title
-                String titleSong = data.getStringExtra(StaticName.SOUND_TITLE);
-                mTvRingtone.setText(titleSong);
-                alarm.setSoundTitle(titleSong);
-                alarm.setSoundUri(data.getStringExtra(StaticName.SOUND_URI));
-                alarm.setHasReadLoudTime(data.getBooleanExtra(StaticName.HAS_READ_LOUD,true));
+                //nhận về chế độ âm thanh
+                SoundMode soundMode = (SoundMode) data.getSerializableExtra("sound_mode");
+                alarm.setSoundMode(soundMode);
+                mTvRingtone.setText(soundMode.getSoundTitle());
+                mSwitchRingtoneSound.setChecked(alarm.getSoundMode().isTurnOn());
             }
         }
         else if(requestCode==StaticName.CODE_SET_VIBRATE){
             if(resultCode == Activity.RESULT_OK && data!=null){
-                String vibrate_mode_rececived = data.getStringExtra(StaticName.VIBRATE_MODE);
-                mSwitchVibrate.setChecked(data.getBooleanExtra("switchVibrateStatus",false));
-                mTvVibrate.setText(vibrate_mode_rececived);
-                alarm.setVibrateMode(vibrate_mode_rececived);
+                //nhận về chế độ rung
+                VibrateMode vibrateMode = (VibrateMode) data.getSerializableExtra("vibrate_mode");
+                alarm.setVibrateMode(vibrateMode);
+                mTvVibrate.setText(alarm.getVibrateMode().getName());
+                mSwitchVibrate.setChecked(alarm.getVibrateMode().isTurnOn());
+            }
+        }
+        else if(requestCode == StaticName.CODE_SET_PAUSE){
+            if(resultCode == Activity.RESULT_OK && data !=null){
+                //nhận về chế độ dừng
+                PauseMode pauseMode = (PauseMode) data.getSerializableExtra("pause_mode");
+                alarm.setPauseMode(pauseMode);
+                mSwitchPause.setChecked(data.getBooleanExtra("isSwitchPauseOn",false));
+                mTvPause.setText(pauseMode.display());
             }
         }
     }
@@ -181,23 +193,28 @@ Time time = new Time();
             listDay.get(position).setChecked(true);
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void saveAlarm(){
         //giờ phút
         time.setHour(timePicker.getHour());
         time.setMinute(timePicker.getMinute());
+        getNextDay();
         //tên báo thức
         alarm.setName(mEdtTitle.getText().toString());
         alarm.setTime(time);
         //các chế độ cài đặt
-        alarm.setHasSound(mSwitchRingtoneSound.isChecked());
-        alarm.setHasVibrate(mSwitchVibrate.isChecked());
-        alarm.setHasPause(mSwitchPause.isChecked());
+        alarm.getSoundMode().setTurnOn(mSwitchRingtoneSound.isChecked());
+        alarm.getVibrateMode().setTurnOn(mSwitchVibrate.isChecked());
+        alarm.getPauseMode().setTurnOn(mSwitchPause.isChecked());
         //ngày trong tuần
         alarm.setListDaySet(getListDayIsChecked());
         //gửi kết quả về màn chính
         Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("data",alarm);
+        int indexEdit = getIntent().getIntExtra("position_need_edit",-1);
+        if(indexEdit!=-1){
+            intent.putExtra("position_need_edit",indexEdit);
+        }
         setResult(Activity.RESULT_OK,intent);
         finish();
     }
@@ -220,4 +237,44 @@ Time time = new Time();
                 },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
         datePickerDialog.show();
     }
+    public void updateData(){
+        mTvRingtone.setText(alarm.getSoundMode().getSoundTitle());
+        mTvVibrate.setText(alarm.getVibrateMode().getName());
+        mTvPause.setText(alarm.getPauseMode().display());
+        mSwitchRingtoneSound.setChecked(alarm.getSoundMode().isTurnOn());
+        mSwitchVibrate.setChecked(alarm.getVibrateMode().isTurnOn());
+        mSwitchPause.setChecked(alarm.getPauseMode().isTurnOn());
+        mEdtTitle.setText(alarm.getName());
+    }
+    public int compareTime(int h1, int m1, int h2, int m2){
+        if(h1>h2) return  1;
+        if(h1==h2){
+            if(m1>m2) return  1;
+            if(m1==m2) return  0;
+            else return -1;
+        }else return -1;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public  void getNextDay(){
+        Calendar calendar = Calendar.getInstance();
+        if(compareTime(timePicker.getHour(),timePicker.getMinute(),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE))!=1){
+            calendar.add(Calendar.DAY_OF_YEAR,1);
+        }
+        time.setYear(calendar.get(Calendar.YEAR));
+        time.setMonth(calendar.get(Calendar.MONTH));
+        time.setDay(calendar.get(Calendar.DATE));
+        time.setDayOfWeek(getStringDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
+    }
+    public String getStringDayOfWeek(int i){
+        switch (i){
+            case Calendar.MONDAY: return "T.2";
+            case Calendar.TUESDAY: return "T.3";
+            case Calendar.WEDNESDAY: return "T.4";
+            case Calendar.THURSDAY: return "T.5";
+            case Calendar.FRIDAY: return "T.6";
+            case Calendar.SATURDAY: return "T.7";
+            default: return "CN";
+        }
+    }
+
 }

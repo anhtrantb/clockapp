@@ -29,12 +29,14 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
     List<ItemSelect> listRingtone = new ArrayList<>();
     AdapterSelectItem  adapterSelectItem;
     MediaPlayer mediaPlayer= new MediaPlayer();
-    private int positionChecked;
+    SoundMode soundMode ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ringtone_sound);
         initView();
+        //lấy dữ liệu
+        soundMode= (SoundMode) getIntent().getSerializableExtra("sound_mode");
         //thiết lập cho tool bar
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.ringtone_choosen));
@@ -84,7 +86,6 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
 
     @Override
     public void onItemRadioChecked(int position) {
-        positionChecked = position;
             mediaPlayer.stop();
             //phát nhạc khi click item
             mediaPlayer.reset();
@@ -107,9 +108,10 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
     public void sendData(){
         //gửi kết quả đã thiết lập về màn hình trước
         Intent intent = new Intent();
-        intent.putExtra(StaticName.SOUND_TITLE,listRingtone.get(positionChecked).getContent());
-        intent.putExtra(StaticName.SOUND_URI,listRingtone.get(positionChecked).getUri());
-        intent.putExtra(StaticName.HAS_READ_LOUD,swReadLoudTime.isChecked());
+        soundMode.setSoundTitle(listRingtone.get(getPositionChecked()).getContent());
+        soundMode.setSoundUri(listRingtone.get(getPositionChecked()).getUri());
+        soundMode.setHasReadLoudTime(swReadLoudTime.isChecked());
+        intent.putExtra("sound_mode",soundMode);
         setResult(Activity.RESULT_OK,intent);
         finish();
     }
@@ -125,11 +127,18 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
     public int getDefautSelectPosition(){
         //nhận về vị trí mặc định gửi từ activity trước
         //lấy vị trí theo tên bài hát nhận được
-        String titleRececive = getIntent().getStringExtra(StaticName.SOUND_TITLE);
+        String titleRececive = soundMode.getSoundTitle();
         for(int i=0;i< listRingtone.size();i++){
             if(listRingtone.get(i).getContent().trim().equals(titleRececive)){
                 return i;
             }
+        }
+        return -1;
+    }
+    public int getPositionChecked(){
+        for(int i=0;i<listRingtone.size();i++){
+            if(listRingtone.get(i).isChecked())
+                return i;
         }
         return -1;
     }

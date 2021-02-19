@@ -28,4 +28,10 @@ public class VibratePattern {
     public String getFirst(){
         return "Basic call";
     }
+    public VibrateMode getDefaut(){
+        VibrateMode vibrateMode = new VibrateMode();
+        vibrateMode.setName("Basic call");
+        vibrateMode.setPattern(pattern1);
+        return  vibrateMode;
+    }
 }

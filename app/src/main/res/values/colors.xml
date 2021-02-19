@@ -11,6 +11,7 @@
     <color name="secondary_color">#4A64F8</color>
     <color name="background">#EBEBEB</color>
     <color name="item_background">#F0F0F0</color>
+    <color name="item_background_white">#FCFCFC</color>
     <color name="background_light">#EEEEEE</color>
     <color name="item_background_border">#A8A8A8</color>
     <color name="tab_text_normal">#8E8B8B</color>
