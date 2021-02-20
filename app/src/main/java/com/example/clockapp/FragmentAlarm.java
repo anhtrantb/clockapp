@@ -1,7 +1,9 @@
 package com.example.clockapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,8 +25,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmListener {
     LinearLayout linearLayout;
@@ -33,8 +39,12 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
     RecyclerView recyclerViewAlarm;
     Toolbar mtoolbar;
 
-    ArrayList<Alarm> listAlarm = new ArrayList<>();
+    List<Alarm> listAlarm ;
     AdapterAlarm mAdapterAlarm;
+    final String dataStoreName = "listAlarmData";
+    final String keySave = "keySave";
+    private  SharedPreferences sharedPreferences;
+    private  SharedPreferences.Editor editor;
     private static FragmentAlarm fragmentAlarm;
     public static FragmentAlarm getInstance(){
        if(fragmentAlarm==null){
@@ -42,6 +52,14 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
        }
        return fragmentAlarm;
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        sharedPreferences = context.getSharedPreferences(dataStoreName, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,6 +80,8 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
             float percentage = ((float) Math.abs(verticalOffset) / appBarLayout1.getTotalScrollRange());
             linearLayout.setAlpha(1- 2 * percentage);
         });
+        if(getDataSaved()!=null) listAlarm = getDataSaved();
+        else listAlarm = new ArrayList<>();
         mAdapterAlarm = new AdapterAlarm(listAlarm,this);
         recyclerViewAlarm.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewAlarm.setAdapter(mAdapterAlarm);
@@ -130,7 +150,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 listAlarm.add(alarm);
                 mAdapterAlarm.notifyItemInserted(listAlarm.size()-1);
             }
-            Log.e("tag",alarm.getTime().getDayOfWeek());
         }
     }
     public Alarm getDefaultAlarm(){
@@ -141,5 +160,34 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         alarm.setVibrateMode(new VibratePattern().getDefaut());
         alarm.setPauseMode(PauseMode.getDefault());
         return  alarm;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        saveDataToSharePreference();
+    }
+
+    public void saveDataToSharePreference(){
+        if(listAlarm.size()!=0){
+            Gson gson = new Gson();
+            String json = gson.toJson(listAlarm);
+            editor.putString(keySave, json);
+            editor.apply();
+        }
+    }
+
+    public List<Alarm> getDataSaved(){
+        List<Alarm> arrayItems;
+        String serializedObject = sharedPreferences.getString(keySave, null);
+        if (serializedObject != null) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Alarm>>(){}.getType();
+            arrayItems = gson.fromJson(serializedObject, type);
+            Log.e("tag","have data");
+            return arrayItems;
+        }
+        Log.e("tag","null");
+        return null;
     }
 }

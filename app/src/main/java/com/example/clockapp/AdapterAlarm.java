@@ -12,14 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> {
-    ArrayList<Alarm> listItem;
+    List<Alarm> listItem;
     interface ItemAlarmListener{
         void onItemAlarmClickListener(int position);
     }
     ItemAlarmListener listener;
-    public AdapterAlarm(ArrayList<Alarm> listItem,ItemAlarmListener listener) {
+    public AdapterAlarm(List<Alarm> listItem,ItemAlarmListener listener) {
         this.listItem = listItem;
         this.listener = listener;
     }
