@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -82,7 +83,7 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         });
         if(getDataSaved()!=null) listAlarm = getDataSaved();
         else listAlarm = new ArrayList<>();
-        mAdapterAlarm = new AdapterAlarm(listAlarm,this);
+        mAdapterAlarm = new AdapterAlarm(getContext(),listAlarm,this);
         recyclerViewAlarm.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewAlarm.setAdapter(mAdapterAlarm);
 
@@ -127,11 +128,13 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
     }
     //hàm được gọi khi nhận giá trị từ màn setalarm
     @Override
-    public void onItemAlarmClickListener(int position) {
-        Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
-        intent.putExtra("position_need_edit",position);
-        intent.putExtra("alarm",listAlarm.get(position));
-        getParentFragment().startActivityForResult(intent,StaticName.CODE_EDIT_ALARM);
+    public void onItemAlarmClickListener(int position,boolean isSelectedState) {
+        if(!isSelectedState){
+            Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
+            intent.putExtra("position_need_edit",position);
+            intent.putExtra("alarm",listAlarm.get(position));
+            getParentFragment().startActivityForResult(intent,StaticName.CODE_EDIT_ALARM);
+        }
     }
 
     @Override
@@ -184,10 +187,8 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
             Gson gson = new Gson();
             Type type = new TypeToken<List<Alarm>>(){}.getType();
             arrayItems = gson.fromJson(serializedObject, type);
-            Log.e("tag","have data");
             return arrayItems;
         }
-        Log.e("tag","null");
         return null;
     }
 }

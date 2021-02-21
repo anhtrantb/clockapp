@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         app:tabTextAppearance="@style/TextAppearance.AppCompat"
         app:tabIndicatorColor="@android:color/transparent"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/tab_text_select"
         app:tabTextColor="@color/tab_text_normal" />
 </LinearLayout>

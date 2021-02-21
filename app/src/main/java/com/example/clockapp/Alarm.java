@@ -11,6 +11,7 @@ public class Alarm implements Serializable {
      VibrateMode vibrateMode;//chế độ rung
      String name = "";//tên báo thức
      boolean TurnOn = true;//được bật hay không
+     boolean select = false;
      //get set
 
      public Time getTime() {
@@ -67,5 +68,13 @@ public class Alarm implements Serializable {
 
      public void setTurnOn(boolean turnOn) {
           TurnOn = turnOn;
+     }
+
+     public boolean isSelect() {
+          return select;
+     }
+
+     public void setSelect(boolean select) {
+          this.select = select;
      }
 }
