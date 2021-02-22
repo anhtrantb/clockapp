@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,6 +40,8 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
     TextView title_collapsingbar_time,title_collapsingbar;
     RecyclerView recyclerViewAlarm;
     Toolbar mtoolbar;
+    Menu menuToobar;
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     List<Alarm> listAlarm ;
     AdapterAlarm mAdapterAlarm;
@@ -94,6 +97,7 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         ((AppCompatActivity)getActivity()).getMenuInflater().inflate(R.menu.menu_toolbar,menu);
+        menuToobar = menu;
     }
 //xử lí menu
     @Override
@@ -125,16 +129,18 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         title_collapsingbar_time = view.findViewById(R.id.title_collapsingbar_time);
         title_collapsingbar = view.findViewById(R.id.title_collapsingbar);
         recyclerViewAlarm = view.findViewById(R.id.recycleview_alarm);
+        collapsingToolbarLayout = view.findViewById(R.id.collapsing_tool_bar);
     }
     //hàm được gọi khi nhận giá trị từ màn setalarm
     @Override
     public void onItemAlarmClickListener(int position,boolean isSelectedState) {
-        if(!isSelectedState){
-            Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
-            intent.putExtra("position_need_edit",position);
-            intent.putExtra("alarm",listAlarm.get(position));
-            getParentFragment().startActivityForResult(intent,StaticName.CODE_EDIT_ALARM);
-        }
+//        if(!isSelectedState){
+//            Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
+//            intent.putExtra("position_need_edit",position);
+//            intent.putExtra("alarm",listAlarm.get(position));
+//            getParentFragment().startActivityForResult(intent,StaticName.CODE_EDIT_ALARM);
+//        }
+        stateSelect();
     }
 
     @Override
@@ -190,5 +196,18 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
             return arrayItems;
         }
         return null;
+    }
+    public void stateSelect(){
+        menuToobar.findItem(R.id.ic_add).setVisible(false);
+        menuToobar.findItem(R.id.ic_menu).setVisible(false);
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(mAdapterAlarm.getSelectedItemsIds().size() == listAlarm.size()){
+            ((MainActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_check);
+            collapsingToolbarLayout.setTitle("Tất cả"+ mAdapterAlarm.getSelectedItemsIds().size());
+        }else
+            ((MainActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_check_none);
+        collapsingToolbarLayout.setTitle("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
+        getActivity().findViewById(R.id.tab_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.layout_ic_action_delete).setVisibility(View.VISIBLE);
     }
 }

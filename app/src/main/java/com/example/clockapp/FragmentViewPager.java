@@ -27,6 +27,7 @@ public class FragmentViewPager extends Fragment {
         AdapterFragmentViewPager adapterFragment = new AdapterFragmentViewPager(this);
         viewPager.setAdapter(adapterFragment);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        viewPager.setUserInputEnabled(false);
         //custom tablayout
         //--->>phải thêm trước khi liên kết với viewpager
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
