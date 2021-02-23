@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +20,11 @@ import java.util.List;
 public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> {
     List<Alarm> listItem;
     Context context;
-    boolean isLongClick = false;
+    boolean selectState = false;
     private SparseBooleanArray mSelectedItemsIds= new SparseBooleanArray(); ;//list chứa những id được chọn
     interface ItemAlarmListener{
         void onItemAlarmClickListener(int position,boolean isSelectedState);
+        void onItemAlarmLongClickListener();
     }
     ItemAlarmListener listener;
     public AdapterAlarm(Context context,List<Alarm> listItem,ItemAlarmListener listener) {
@@ -49,7 +49,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
         holder.mTx_Date.setText(alarm.getTime().displayDate());
         holder.mSw_setAlarm.setChecked(alarm.isTurnOn());
         holder.mTvAlarmName.setText(alarm.getName());
-        if(isLongClick){
+        if(selectState){
             displaySelectedState(holder,position);
         }else{
             displayNormalState(holder);
@@ -69,7 +69,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
     }
     //trạng thái bình thường
     public  void displayNormalState(ViewHolder holder){
-        this.isLongClick = false;
+        this.selectState = false;
         holder.mImgSelectAlarm.setVisibility(View.GONE);
         holder.mSw_setAlarm.setVisibility(View.VISIBLE);
         holder.layoutItemAlarm.setBackground(context.getDrawable(R.drawable.bg_round_white));
@@ -81,9 +81,27 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
         }else   //=false/null
             mSelectedItemsIds.put(position,true);
     }
+    public void clearSelect(){
+        this.mSelectedItemsIds.clear();
+        notifyDataSetChanged();
+    }
+
+    public boolean isSelectState() {
+        return selectState;
+    }
+
+    public void setSelectState(boolean selectState) {
+        this.selectState = selectState;
+    }
 
     public SparseBooleanArray getSelectedItemsIds() {
         return mSelectedItemsIds;
+    }
+    public void setAllItemCheck(){
+        for(int i=0;i<listItem.size();i++){
+            mSelectedItemsIds.put(i,true);
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -112,7 +130,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(isLongClick){
+                    if(selectState){
                         toggleItem(getAdapterPosition());
                         displaySelectedState(ViewHolder.this,getAdapterPosition());
                         mListener.onItemAlarmClickListener(getAdapterPosition(),true);
@@ -124,9 +142,10 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
             itemView.setOnLongClickListener(v -> {
                 toggleItem(getAdapterPosition());
                 displaySelectedState(ViewHolder.this,getAdapterPosition());
-                if(!isLongClick)//tại lần thứ 2 thì không cần thay đổi lại toàn bộ giao diện
+                if(!selectState)//tại lần thứ 2 thì không cần thay đổi lại toàn bộ giao diện
                     notifyDataSetChanged();
-                isLongClick = true;
+                selectState = true;
+                mListener.onItemAlarmLongClickListener();
                 return false;
             });
             //sự kiện trạng thái của switch

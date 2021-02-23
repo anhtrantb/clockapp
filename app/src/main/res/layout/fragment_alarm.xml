@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="1"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -70,7 +75,26 @@
                 android:layout_height="@dimen/mtrl_toolbar_default_height"
                 android:layout_gravity="bottom"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/popupMenuStyle" />
+                app:popupTheme="@style/popupMenuStyle">
+                <LinearLayout
+                    android:id="@+id/layout_select_all_item"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/imv_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_check"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:text="Tất cả"/>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -89,3 +113,29 @@
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <LinearLayout
+    android:id="@+id/layout_action_delete"
+    android:visibility="gone"
+    android:layout_weight="1"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
+    <ImageButton
+        android:id="@+id/imv_action_delete"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_delete"
+        android:scaleType="fitXY"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_gravity="center_horizontal"
+        android:text="Xóa"/>
+    </LinearLayout>
+</LinearLayout>

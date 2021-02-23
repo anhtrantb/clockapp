@@ -23,19 +23,5 @@
         app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/tab_text_select"
         app:tabTextColor="@color/tab_text_normal" />
-    <FrameLayout
-        android:id="@+id/layout_ic_action_delete"
-        android:visibility="gone"
-        android:background="@color/background"
-        android:layout_width="match_parent"
-        android:layout_height="80dp">
-        <ImageButton
-            android:id="@+id/ic_action_delete"
-            android:layout_gravity="center"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_launcher_background"
-            android:scaleType="fitXY"/>
-    </FrameLayout>
+
 </LinearLayout>
