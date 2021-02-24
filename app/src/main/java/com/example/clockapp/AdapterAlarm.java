@@ -21,7 +21,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
     List<Alarm> listItem;
     Context context;
     boolean selectState = false;
-    private SparseBooleanArray mSelectedItemsIds= new SparseBooleanArray(); ;//list chứa những id được chọn
+    private SparseBooleanArray mSelectedItemsIds ;//list chứa những id được chọn
     interface ItemAlarmListener{
         void onItemAlarmClickListener(int position,boolean isSelectedState);
         void onItemAlarmLongClickListener();
@@ -31,7 +31,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
         this.context = context;
         this.listItem = listItem;
         this.listener = listener;
-
+        mSelectedItemsIds= new SparseBooleanArray();
     }
 
     @NonNull

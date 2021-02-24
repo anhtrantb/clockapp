@@ -24,9 +24,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -40,17 +43,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmListener, View.OnClickListener {
-    LinearLayout linearCollapsing,linearActionDeleteItem,linearSelectAllItem;
+    LinearLayout linearCollapsing,linearActionDeleteItem,linearSelectAllItem,layoutActionDelete;
     AppBarLayout appBarLayout;
     TextView title_collapsingbar_time,title_collapsingbar;
     RecyclerView recyclerViewAlarm;
     Toolbar mtoolbar;
     Menu menuToobar;
-    ImageView imvSelect;
+    ImageView imvSelect,imvDelete;
     CollapsingToolbarLayout collapsingToolbarLayout;
     TabLayout tabLayout;
     ViewPager2 viewPager;
-    ImageView imvDelete;
+
     List<Alarm> listAlarm ;
     AdapterAlarm mAdapterAlarm;
     final String dataStoreName = "listAlarmData";
@@ -98,8 +101,8 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         mAdapterAlarm = new AdapterAlarm(getContext(),listAlarm,this);
         recyclerViewAlarm.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewAlarm.setAdapter(mAdapterAlarm);
-        imvDelete.setOnClickListener(this);
         imvSelect.setOnClickListener(this);
+        imvDelete.setOnClickListener(this);
         return view;
     }
 
@@ -145,8 +148,9 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         collapsingToolbarLayout = view.findViewById(R.id.collapsing_tool_bar);
         tabLayout =  getParentFragment().getView().findViewById(R.id.tab_layout);
         viewPager = getActivity().findViewById(R.id.pager);
-        linearActionDeleteItem = view.findViewById(R.id.layout_action_delete);
-        imvDelete = view.findViewById(R.id.imv_action_delete);
+        linearActionDeleteItem = view.findViewById(R.id.bottom_action_delete);
+        layoutActionDelete = view.findViewById(R.id.layout_action_delete);
+        imvDelete = view.findViewById(R.id.imv_delete);
         imvSelect = view.findViewById(R.id.imv_select);
         linearSelectAllItem = view.findViewById(R.id.layout_select_all_item);
     }
@@ -154,10 +158,7 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
     @Override
     public void onItemAlarmClickListener(int position,boolean isSelectedState) {
         //check / không check toàn bộ
-        if(listAlarm.size()==mAdapterAlarm.getSelectedItemsIds().size())
-            imvSelect.setImageResource(R.drawable.ic_check);
-        else
-            imvSelect.setImageResource(R.drawable.ic_check_none);
+
 
         if(!mAdapterAlarm.isSelectState()){
             Intent intent = new Intent(getActivity(),ActivitySetAlarm.class);
@@ -165,8 +166,17 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
             intent.putExtra("alarm",listAlarm.get(position));
             getParentFragment().startActivityForResult(intent,StaticName.CODE_EDIT_ALARM);
         }else{
-            title_collapsingbar.setText("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
-            collapsingToolbarLayout.setTitle("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
+            if(listAlarm.size()==mAdapterAlarm.getSelectedItemsIds().size())
+                imvSelect.setImageResource(R.drawable.ic_check);
+            else
+                imvSelect.setImageResource(R.drawable.ic_check_none);
+            if(mAdapterAlarm.getSelectedItemsIds().size()==0){
+                title_collapsingbar.setText("Chọn chuông báo");
+                collapsingToolbarLayout.setTitle("Chọn chuông báo");
+            }else{
+                title_collapsingbar.setText("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
+                collapsingToolbarLayout.setTitle("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
+            }
         }
     }
     //sự kiện long click item
@@ -192,6 +202,7 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 mAdapterAlarm.notifyItemInserted(listAlarm.size()-1);
             }
         }
+        mAdapterAlarm.clearSelect();
     }
     //set giá trị mặc định cho một alarm
     public Alarm getDefaultAlarm(){
@@ -266,6 +277,9 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         title_collapsingbar_time.setVisibility(View.GONE);
         tabLayout.setVisibility(View.GONE);
         viewPager.setUserInputEnabled(false);
+        //tạo animation cho imv xóa
+        Animation flyAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fly);
+        layoutActionDelete.startAnimation(flyAnimation);
     }
     //trạng thái bình thường
     public void stateUnSelect(){
@@ -285,28 +299,44 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
 //  click
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.imv_action_delete){
+        if(v.getId() == R.id.imv_delete){
             SparseBooleanArray itemSelectId = mAdapterAlarm.getSelectedItemsIds();
-            mAdapterAlarm.setSelectState(false);
-            stateUnSelect();
-            for (int i = (itemSelectId.size() - 1); i >= 0; i--) {
-                if (itemSelectId.valueAt(i)) {
-                    listAlarm.remove(itemSelectId.keyAt(i));
-                    mAdapterAlarm.clearSelect();
-                    mAdapterAlarm.notifyDataSetChanged();
+            if(itemSelectId.size()==listAlarm.size()){
+                listAlarm.clear();
+            }else{
+                //tạo list chứa các index đã chon
+                List<Integer> list = new ArrayList<>();
+                for(int i=0;i<itemSelectId.size();i++){
+                    if(itemSelectId.valueAt(i))
+                        list.add(itemSelectId.keyAt(i));
+                }
+                Collections.sort(list);
+                //xoá các phần tử tìm được
+                if(list.size()!=0){
+                    for (int i = list.size() - 1; i >= 0; i--) {
+                        int index = list.get(i);
+                        listAlarm.remove(index);
+                    }
                 }
             }
+            mAdapterAlarm.setSelectState(false);
+            mAdapterAlarm.clearSelect();
             stateUnSelect();
-        }else if(v.getId()==R.id.imv_select){
+            }
+        else if(v.getId()==R.id.imv_select){
             if(isSelectAll) {
                 imvSelect.setImageResource(R.drawable.ic_check_none);
                 mAdapterAlarm.clearSelect();
                 isSelectAll= false;
+                collapsingToolbarLayout.setTitle("Chọn chuông báo");
+                title_collapsingbar.setText("Chọn chuông báo");
             }
             else {
                 imvSelect.setImageResource(R.drawable.ic_check);
                 mAdapterAlarm.setAllItemCheck();
                 isSelectAll=true;
+                collapsingToolbarLayout.setTitle("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
+                title_collapsingbar.setText("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
             }
         }
     }

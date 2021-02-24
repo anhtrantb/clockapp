@@ -114,7 +114,7 @@
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <LinearLayout
-    android:id="@+id/layout_action_delete"
+    android:id="@+id/bottom_action_delete"
     android:visibility="gone"
     android:layout_weight="1"
     android:layout_gravity="bottom"
@@ -123,19 +123,25 @@
     android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="120dp">
-    <ImageButton
-        android:id="@+id/imv_action_delete"
-        android:layout_gravity="center_horizontal"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/layout_action_delete"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_delete"
-        android:scaleType="fitXY"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_gravity="center_horizontal"
-        android:text="Xóa"/>
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/imv_delete"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_delete"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_gravity="center_horizontal"
+            android:text="Xóa"/>
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>
