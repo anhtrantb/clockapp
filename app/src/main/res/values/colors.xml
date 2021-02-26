@@ -21,4 +21,7 @@
     <color name="popup_menu_background_color">#F5F5F5</color>
     <color name="line_divider_color">#A6A4A4</color>
     <color name="grey">#919191</color>
+    <color name="blue_btn">#6165f0</color>
+    <color name="red_btn">#ec4964</color>
+    <color name="black_btn">#1e1e1e</color>
 </resources>

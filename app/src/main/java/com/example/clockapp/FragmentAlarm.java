@@ -121,12 +121,13 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 intent.putExtra("position_need_edit",-1);
                 intent.putExtra("alarm",getDefaultAlarm());
                 getParentFragment().startActivityForResult(intent,StaticName.CODE_EDIT_ALARM);
-            }
-            case R.id.ic_menu:{
-                //Toast.makeText(getContext(), "world", Toast.LENGTH_SHORT).show(); break;
+                break;
             }
             case R.id.ic_delete:{
-
+                stateSelect();
+                mAdapterAlarm.setSelectState(true);
+                mAdapterAlarm.clearSelect();
+                break;
             }
             case R.id.ic_setting:{
 
@@ -197,9 +198,15 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 mAdapterAlarm.notifyItemChanged(indexEdit);
             }else{
                 //thêm báo thức
-                alarm.setTurnOn(true);
-                listAlarm.add(alarm);
-                mAdapterAlarm.notifyItemInserted(listAlarm.size()-1);
+                int indexAdd = findDuplicateAlarm(alarm);
+                if(indexAdd==-1) {
+                    alarm.setTurnOn(true);
+                    listAlarm.add(alarm);
+                    mAdapterAlarm.notifyItemInserted(listAlarm.size() - 1);
+                }else{
+                    listAlarm.get(indexAdd).setTurnOn(true);
+                    mAdapterAlarm.notifyItemChanged(indexAdd);
+                }
             }
         }
         mAdapterAlarm.clearSelect();
@@ -339,5 +346,12 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 title_collapsingbar.setText("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
             }
         }
+    }
+    public int findDuplicateAlarm(Alarm alarm){
+        for(int i=0;i<listAlarm.size();i++){
+            if(listAlarm.get(i).getTime().getHour()==alarm.getTime().getHour()&&
+                listAlarm.get(i).getTime().getMinute()==alarm.getTime().getMinute()) return i;
+        }
+        return  -1;
     }
 }

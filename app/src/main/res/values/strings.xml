@@ -43,4 +43,9 @@
         <item>5 lần</item>
         <item>Mãi mãi</item>
     </string-array>
+    <string name="bat_dau">Bắt đầu</string>
+    <string name="dung">Dừng</string>
+    <string name="bam">Bấm</string>
+    <string name="tiep_tuc">Tiếp tục</string>
+    <string name="dat_lai">Đặt lại</string>
 </resources>

@@ -92,6 +92,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
 
     public void setSelectState(boolean selectState) {
         this.selectState = selectState;
+
     }
 
     public SparseBooleanArray getSelectedItemsIds() {

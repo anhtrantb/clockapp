@@ -22,12 +22,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.example.clockapp.Base.ItemViewClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivitySetAlarm extends AppCompatActivity implements ItemViewClickListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterDayOfWeek.onClickDayListener {
+public class ActivitySetAlarm extends AppCompatActivity implements  View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterDayOfWeek.onClickDayListener {
 TimePicker timePicker;
 TextView mTvExit, mTvSave, mTvRingtone, mTvVibrate, mTvPause;
 EditText mEdtTitle;
@@ -74,10 +73,6 @@ Time time = new Time();
         super.onBackPressed();
     }
 
-    @Override
-    public void onItemViewClickListener(int position, List<?> list) {
-
-    }
     public void initView(){
         timePicker = findViewById(R.id.time_picker);
         mTvExit = findViewById(R.id.tv_exit);
