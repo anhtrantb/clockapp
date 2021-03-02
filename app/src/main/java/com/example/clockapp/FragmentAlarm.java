@@ -56,8 +56,8 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
 
     List<Alarm> listAlarm ;
     AdapterAlarm mAdapterAlarm;
-    final String dataStoreName = "listAlarmData";
-    final String keySave = "keySave";
+    final String dataStoreName = "AlarmDatabase";
+    final String keySave = "listAlarmSaved";
     boolean isSelectAll = false;
     private  SharedPreferences sharedPreferences;
     private  SharedPreferences.Editor editor;
@@ -130,7 +130,9 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 break;
             }
             case R.id.ic_setting:{
-
+                //chuyển tới màn cài đặt
+                Intent intent = new Intent(getActivity(),ActivitySetting.class);
+                startActivity(intent);
             }
             case android.R.id.home:
                 mAdapterAlarm.setAllItemCheck();

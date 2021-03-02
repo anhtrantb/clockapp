@@ -156,6 +156,11 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
                     //set độ mờ cho text view
                     setAlphaTextView(alphaTextView);
                     listItem.get(getAdapterPosition()).setTurnOn(isChecked);
+//                    if(mSw_setAlarm.isChecked()){
+//                        listItem.get(getAdapterPosition()).schedule(context);
+//                    }else{
+//                        listItem.get(getAdapterPosition()).cancelAlarm(context);
+//                    }
                 }
             });
         }

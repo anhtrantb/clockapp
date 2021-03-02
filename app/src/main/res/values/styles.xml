@@ -34,4 +34,7 @@
         <item name="android:track">@drawable/switch_track_selector</item>
         <item name="android:thumb">@drawable/switch_thumb</item>
     </style>
+    <style name="tab_layout">
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

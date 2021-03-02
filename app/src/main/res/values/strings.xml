@@ -45,7 +45,12 @@
     </string-array>
     <string name="bat_dau">Bắt đầu</string>
     <string name="dung">Dừng</string>
+    <string name="tam_dung">Tạm dừng</string>
     <string name="bam">Bấm</string>
     <string name="tiep_tuc">Tiếp tục</string>
     <string name="dat_lai">Đặt lại</string>
+    <string name="hour">Giờ</string>
+    <string name="minutes">Phút</string>
+    <string name="seconds">Giây</string>
+    <string name="add_time_count">Thêm bộ đếm giờ đặt sẵn</string>
 </resources>

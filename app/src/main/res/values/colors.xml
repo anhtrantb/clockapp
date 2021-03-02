@@ -24,4 +24,5 @@
     <color name="blue_btn">#6165f0</color>
     <color name="red_btn">#ec4964</color>
     <color name="black_btn">#1e1e1e</color>
+    <color name="white_f2f2f2">#f2f2f2</color>
 </resources>

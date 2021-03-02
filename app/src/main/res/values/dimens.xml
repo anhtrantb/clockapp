@@ -2,4 +2,5 @@
 <resources>
     <dimen name="switch_size">22dp</dimen>
     <dimen name="icon_check_size">20dp</dimen>
+    <dimen name="btn">110dp</dimen>
 </resources>

@@ -12,6 +12,7 @@ public class RingTone {
         RingtoneManager manager = new RingtoneManager(context);
         //lấy toàn bộ ringtone trong máy
         manager.setType(RingtoneManager.TYPE_RINGTONE);
+        manager.getRingtoneUri(0);
         //con trỏ duyệt
         Cursor cursor = manager.getCursor();
         Map<String, String> list = new HashMap<>();
@@ -23,12 +24,12 @@ public class RingTone {
         }
         return list;
     }
-    public static String getFirst(Context context){
+    public static String getFirstSongUri(Context context){
         RingtoneManager manager = new RingtoneManager(context);
         manager.setType(RingtoneManager.TYPE_RINGTONE);
         Cursor cursor = manager.getCursor();
         cursor.moveToFirst();
-        return cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
+        return cursor.getString(RingtoneManager.ID_COLUMN_INDEX);
     }
     public static SoundMode getFirstSong(Context context){
         RingtoneManager manager = new RingtoneManager(context);

@@ -1,7 +1,15 @@
 package com.example.clockapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Alarm implements Serializable {
      Time time;//thời gian
@@ -12,6 +20,25 @@ public class Alarm implements Serializable {
      String name = "";//tên báo thức
      boolean TurnOn = true;//được bật hay không
      boolean select = false;
+     public void schedule(Context context) {
+          //thiết lập báo thức
+          AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+          Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+//          intent.putExtra()......
+          PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 11, intent, 0);
+               alarmManager.setExact(
+                  AlarmManager.RTC_WAKEUP,
+                  3000,
+                  alarmPendingIntent
+               );
+     }
+     //hủy alarm
+     public void cancelAlarm(Context context) {
+          AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+          Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+          PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 11, intent, 0);
+          alarmManager.cancel(alarmPendingIntent);
+     }
      //get set
 
      public Time getTime() {

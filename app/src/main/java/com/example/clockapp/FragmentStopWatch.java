@@ -1,7 +1,9 @@
 package com.example.clockapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -22,10 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FragmentStopWatch extends Fragment implements View.OnClickListener {
+public class FragmentStopWatch extends Fragment implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
 Button btnStart, btnRestartClick, btnPauseResume;
 TextView tvCountTime,tvSubStopTime;
 LinearLayout layoutCountTime;
+Toolbar toolbar;
 Handler handler = new Handler(Looper.getMainLooper());
 final private long delayMillis = 100l;
 
@@ -54,6 +58,11 @@ boolean isStopWatch = false;//trạng thái đang bấm giờ
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_stop_watch, container, false);
         initView(view);
+        //toolbar
+        toolbar.inflateMenu(R.menu.menu_toolbar);
+        toolbar.getMenu().findItem(R.id.ic_delete).setVisible(false);
+        toolbar.getMenu().findItem(R.id.ic_add).setVisible(false);
+        toolbar.setOnMenuItemClickListener(this);
         btnStart.setOnClickListener(this);
         btnRestartClick.setOnClickListener(this);
         btnPauseResume.setOnClickListener(this);
@@ -65,12 +74,13 @@ boolean isStopWatch = false;//trạng thái đang bấm giờ
     }
     public void initView(View view){
         btnStart = view.findViewById(R.id.btn_start);
-        btnRestartClick = view.findViewById(R.id.btn_stop_set);
+        btnRestartClick = view.findViewById(R.id.btn_stop);
         btnPauseResume = view.findViewById(R.id.btn_pause_resume);
         tvCountTime = view.findViewById(R.id.tv_count_time);
         layoutCountTime = view.findViewById(R.id.layout_count_time);
         tvSubStopTime = view.findViewById(R.id.tv_sub_stoptime);
         recycleStopTime = view.findViewById(R.id.recycle_stop_time);
+        toolbar = view.findViewById(R.id.toolbar);
     }
     @Override
     public void onClick(View v) {
@@ -82,7 +92,7 @@ boolean isStopWatch = false;//trạng thái đang bấm giờ
                 //animation
                 displayButton();
                 break;
-            case R.id.btn_stop_set:
+            case R.id.btn_stop:
                 if(isStopWatch){
                     //thêm những thời gian bấm được vào recycle view
                     subStartTime = SystemClock.uptimeMillis();
@@ -187,5 +197,16 @@ boolean isStopWatch = false;//trạng thái đang bấm giờ
         stopTimeList.clear();
         isStopWatch = false;
         tvCountTime.setText("00:00.00");
+    }
+
+    //click menu trong toolbar
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if(item.getItemId()==R.id.ic_setting){
+            //chuyển tới màn cài đặt
+            Intent intent = new Intent(getActivity(),ActivitySetting.class);
+            startActivity(intent);
+        }
+        return false;
     }
 }
