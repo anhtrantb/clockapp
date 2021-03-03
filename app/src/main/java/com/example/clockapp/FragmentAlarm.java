@@ -198,16 +198,22 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 //sửa báo thức
                 listAlarm.set(indexEdit,alarm);
                 mAdapterAlarm.notifyItemChanged(indexEdit);
+                if(listAlarm.get(indexEdit).isTurnOn())
+                    listAlarm.get(indexEdit).schedule(getContext());
+                else
+                    listAlarm.get(indexEdit).cancelAlarm(getContext());
             }else{
                 //thêm báo thức
                 int indexAdd = findDuplicateAlarm(alarm);
-                if(indexAdd==-1) {
+                if(indexAdd==-1) {//nếu không trùng
                     alarm.setTurnOn(true);
                     listAlarm.add(alarm);
                     mAdapterAlarm.notifyItemInserted(listAlarm.size() - 1);
-                }else{
+                    listAlarm.get(listAlarm.size() - 1).schedule(getContext());
+                }else{//nếu trùng
                     listAlarm.get(indexAdd).setTurnOn(true);
                     mAdapterAlarm.notifyItemChanged(indexAdd);
+                    listAlarm.get(indexAdd).schedule(getContext());
                 }
             }
         }

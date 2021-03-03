@@ -7,101 +7,130 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.clockapp.service.AlarmBroadcastReceiver;
+import com.example.clockapp.service.AlarmService;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+import java.util.TimeZone;
 
 public class Alarm implements Serializable {
-     Time time;//thời gian
-     ArrayList<String> listDaySet;//ngày thiết lập
-     PauseMode pauseMode;//chế độ dừng
-     SoundMode soundMode;//chế độ âm thanh
-     VibrateMode vibrateMode;//chế độ rung
-     String name = "";//tên báo thức
-     boolean TurnOn = true;//được bật hay không
-     boolean select = false;
-     public void schedule(Context context) {
-          //thiết lập báo thức
-          AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-          Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+    int id;
+    Time time;//thời gian
+    ArrayList<String> listDaySet;//ngày thiết lập
+    PauseMode pauseMode;//chế độ dừng
+    SoundMode soundMode;//chế độ âm thanh
+    VibrateMode vibrateMode;//chế độ rung
+    String name = "";//tên báo thức
+    boolean TurnOn = true;//được bật hay không
+    boolean select = false;
+
+    public Alarm() {
+        this.id = getRandom();
+    }
+
+    public void schedule(Context context) {
+        //thiết lập báo thức
+        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
 //          intent.putExtra()......
-          PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 11, intent, 0);
-               alarmManager.setExact(
-                  AlarmManager.RTC_WAKEUP,
-                  3000,
-                  alarmPendingIntent
-               );
-     }
-     //hủy alarm
-     public void cancelAlarm(Context context) {
-          AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-          Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
-          PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 11, intent, 0);
-          alarmManager.cancel(alarmPendingIntent);
-     }
-     //get set
+        Toast.makeText(context, "Chuông báo được đặt cho " + Time.getTimeStringFromMilliseconds(getTimeLeft()), Toast.LENGTH_SHORT).show();
+        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, id, intent, 0);
 
-     public Time getTime() {
-          return time;
-     }
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                getTimeLeft(),
+                alarmPendingIntent
+        );
+    }
 
-     public void setTime(Time time) {
-          this.time = time;
-     }
+    //hủy alarm
+    public void cancelAlarm(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, id, intent, 0);
+        alarmManager.cancel(alarmPendingIntent);
+        context.stopService(new Intent(context, AlarmService.class));
+        this.TurnOn = false;
+    }
+    //get set
 
-     public ArrayList<String> getListDaySet() {
-          return listDaySet;
-     }
+    public Time getTime() {
+        return time;
+    }
 
-     public void setListDaySet(ArrayList<String> listDaySet) {
-          this.listDaySet = listDaySet;
-     }
+    public void setTime(Time time) {
+        this.time = time;
+    }
 
-     public PauseMode getPauseMode() {
-          return pauseMode;
-     }
+    public ArrayList<String> getListDaySet() {
+        return listDaySet;
+    }
 
-     public void setPauseMode(PauseMode pauseMode) {
-          this.pauseMode = pauseMode;
-     }
+    public void setListDaySet(ArrayList<String> listDaySet) {
+        this.listDaySet = listDaySet;
+    }
 
-     public SoundMode getSoundMode() {
-          return soundMode;
-     }
+    public PauseMode getPauseMode() {
+        return pauseMode;
+    }
 
-     public void setSoundMode(SoundMode soundMode) {
-          this.soundMode = soundMode;
-     }
+    public void setPauseMode(PauseMode pauseMode) {
+        this.pauseMode = pauseMode;
+    }
 
-     public VibrateMode getVibrateMode() {
-          return vibrateMode;
-     }
+    public SoundMode getSoundMode() {
+        return soundMode;
+    }
 
-     public void setVibrateMode(VibrateMode vibrateMode) {
-          this.vibrateMode = vibrateMode;
-     }
+    public void setSoundMode(SoundMode soundMode) {
+        this.soundMode = soundMode;
+    }
 
-     public String getName() {
-          return name;
-     }
+    public VibrateMode getVibrateMode() {
+        return vibrateMode;
+    }
 
-     public void setName(String name) {
-          this.name = name;
-     }
+    public void setVibrateMode(VibrateMode vibrateMode) {
+        this.vibrateMode = vibrateMode;
+    }
 
-     public boolean isTurnOn() {
-          return TurnOn;
-     }
+    public String getName() {
+        return name;
+    }
 
-     public void setTurnOn(boolean turnOn) {
-          TurnOn = turnOn;
-     }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-     public boolean isSelect() {
-          return select;
-     }
+    public boolean isTurnOn() {
+        return TurnOn;
+    }
 
-     public void setSelect(boolean select) {
-          this.select = select;
-     }
+    public void setTurnOn(boolean turnOn) {
+        TurnOn = turnOn;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
+    public int getRandom() {
+        Random random = new Random(10000);
+        return random.nextInt();
+    }
+
+    public long getTimeLeft() {
+        Calendar calendar = Calendar.getInstance();
+        long current = calendar.getTimeInMillis();
+        calendar.set(time.getYear(), time.getMonth(), time.getDay(), time.getHour(), time.getMinute());
+        return calendar.getTimeInMillis() - current;
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.clockapp;
+package com.example.clockapp.service;
 
 
 import android.app.NotificationChannel;
@@ -6,17 +6,25 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.clockapp.R;
+import com.example.clockapp.Time;
+
+import java.io.IOException;
+
 public class ServiceCountTime extends Service {
     final String CHANNEL_ID = "123";
     final int NOTIFICATION_ID = 1;
+    private MediaPlayer mediaPlayer;
     NotificationManagerCompat notificationManager;
     public static final String COUNTDOWN_BR = "com.example.clockapp.countdown_br";
     Intent timeIntent = new Intent(COUNTDOWN_BR);
@@ -26,6 +34,7 @@ public class ServiceCountTime extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        mediaPlayer = new MediaPlayer();
         createNotificationChannel();
         notificationManager = NotificationManagerCompat.from(this);
 
@@ -35,12 +44,14 @@ public class ServiceCountTime extends Service {
     public void onDestroy() {
         if(cdt!=null)
             cdt.cancel();
+        mediaPlayer.stop();
+        mediaPlayer.release();
         super.onDestroy();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent intent1 = new Intent(this, BroadcaseStopService.class);
+        Intent intent1 = new Intent(this, BrStopCountService.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,111,intent1,0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Chạm để tắt báo thức!")
@@ -65,6 +76,7 @@ public class ServiceCountTime extends Service {
                 notificationManager.notify(NOTIFICATION_ID,builder.build());
                 timeIntent.putExtra("timeMilli",0);
                 sendBroadcast(timeIntent);
+                runMusic();
             }
         };
         cdt.start();}
@@ -87,6 +99,16 @@ public class ServiceCountTime extends Service {
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+        }
+    }
+    public void runMusic(){
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        try {
+            mediaPlayer.setDataSource(this,uri);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

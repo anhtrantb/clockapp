@@ -1,5 +1,6 @@
 package com.example.clockapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -17,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -34,7 +34,7 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.clockapp.service.AlarmService;
+import com.example.clockapp.service.ServiceCountTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
     List<Time> listAvailableCount;
     AdapterCountTime adapterCountTime;
     boolean isCountDown = false;
-    Intent intentService;
+
     long timeLeft ;
 
     final String dataStoreName = "AlarmDatabase";
@@ -82,7 +82,6 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
         initNumberPicker();
         getDataSaved();
         isCountDown = false;
-        intentService = new Intent(getContext(), AlarmService.class);
         progressBar.setMax(100);
         progressBar.setProgress(20);
         btnStart.setOnClickListener(this);
@@ -115,6 +114,7 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
     }
 
     //thiết lập cho number pịcker, gía trị min max
+    @SuppressLint("DefaultLocale")
     public void initNumberPicker() {
         pickerHour.setMinValue(0);
         pickerHour.setMaxValue(99);
@@ -154,15 +154,11 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
 
         layoutPicker.setVisibility(View.VISIBLE);
         layoutProgress.setVisibility(View.INVISIBLE);
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                btnStart.setVisibility(View.VISIBLE);
-            }
-        }, 500);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> btnStart.setVisibility(View.VISIBLE), 500);
     }
 
     //sự kiện click các nút bấm trạng thái
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -278,7 +274,7 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
     }
     //start service
     public void startCountService(long timeCount){
-        Intent intentService = new Intent(getActivity(),ServiceCountTime.class);
+        Intent intentService = new Intent(getActivity(), ServiceCountTime.class);
         intentService.putExtra("totalTime",timeCount);
         getActivity().startService(intentService);
     }
@@ -292,10 +288,9 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
             long millis = intent.getLongExtra("timeMilli",0);
             timeLeft = millis;
             if(millis == 0){
-                countDownStop();
-                stopCountService();
+                progressBar.setProgress(0);
             }else{
-                if(isCountDown==false) {
+                if(!isCountDown) {
                     countDownState();
                     isCountDown = true;
                     Log.i("running","aksdghjk");

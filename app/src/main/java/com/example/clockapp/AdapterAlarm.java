@@ -1,6 +1,7 @@
 package com.example.clockapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,6 +132,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //sự kiện click
                     if(selectState){
                         toggleItem(getAdapterPosition());
                         displaySelectedState(ViewHolder.this,getAdapterPosition());
@@ -156,11 +158,17 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
                     //set độ mờ cho text view
                     setAlphaTextView(alphaTextView);
                     listItem.get(getAdapterPosition()).setTurnOn(isChecked);
-//                    if(mSw_setAlarm.isChecked()){
-//                        listItem.get(getAdapterPosition()).schedule(context);
-//                    }else{
-//                        listItem.get(getAdapterPosition()).cancelAlarm(context);
-//                    }
+                }
+            });
+            mSw_setAlarm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //đặt báo thức
+                    if(mSw_setAlarm.isChecked()){
+                        listItem.get(getAdapterPosition()).schedule(context);
+                    }else{
+                        listItem.get(getAdapterPosition()).cancelAlarm(context);
+                    }
                 }
             });
         }
