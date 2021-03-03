@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -41,7 +42,8 @@ final String CHANNEL_ID = "1";
                 .setContentIntent(pendingIntent)
                 .build();
         //âm thanh
-        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Uri uri= Uri.parse(intent.getStringExtra("uri"));
+        Log.e("tag", String.valueOf(uri));
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(this,uri);

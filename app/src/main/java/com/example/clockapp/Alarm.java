@@ -35,14 +35,14 @@ public class Alarm implements Serializable {
     public void schedule(Context context) {
         //thiết lập báo thức
         Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+        intent.putExtra("uri",soundMode.getSoundUri());
 //          intent.putExtra()......
         Toast.makeText(context, "Chuông báo được đặt cho " + Time.getTimeStringFromMilliseconds(getTimeLeft()), Toast.LENGTH_SHORT).show();
         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, id, intent, 0);
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(
+        alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
-                getTimeLeft(),
+                Calendar.getInstance().getTimeInMillis()+ getTimeLeft(),
                 alarmPendingIntent
         );
     }

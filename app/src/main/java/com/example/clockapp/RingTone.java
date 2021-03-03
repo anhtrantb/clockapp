@@ -38,7 +38,7 @@ public class RingTone {
         cursor.moveToFirst();
         SoundMode soundMode = new SoundMode();
         soundMode.setSoundTitle(cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX));
-        soundMode.setSoundUri(cursor.getString(RingtoneManager.ID_COLUMN_INDEX));
+        soundMode.setSoundUri(String.valueOf(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)));
         return  soundMode;
     }
 }

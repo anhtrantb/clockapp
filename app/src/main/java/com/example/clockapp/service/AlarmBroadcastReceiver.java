@@ -20,8 +20,9 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void startAlarmService(Context context, Intent intent) {
-        Intent intentService = new Intent(context, AlarmService.class);
 
+        Intent intentService = new Intent(context, AlarmService.class);
+        intentService.putExtra("uri",intent.getStringExtra("uri"));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intentService);
         } else {
