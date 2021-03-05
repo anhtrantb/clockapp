@@ -105,7 +105,7 @@ public class Time implements Serializable {
     }
 
     public String displayDate() {
-        return this.dayOfWeek + ", " + this.day + " Th" + this.month;
+        return this.dayOfWeek + ", " + this.day + " Th" + (this.month+1);
     }
 
     public static String getTimeStringFromMilliseconds(long milliseconds) {

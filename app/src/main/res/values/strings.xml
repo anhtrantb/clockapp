@@ -53,4 +53,6 @@
     <string name="minutes">Phút</string>
     <string name="seconds">Giây</string>
     <string name="add_time_count">Thêm bộ đếm giờ đặt sẵn</string>
+    <string name="hien_thi_thoi_tiet">Hiển thị thời tiết </string>
+    <string name="note_rung_voi_chuong_bao">Chuông báo và đếm giờ sẽ rung nếu điện thoại của bạn được đặt thành tắt âm hoăc rung. Bạn vẫn sẽ nghe thấy chuông báo khi điện thoại của bạn được đặt thành âm thanh.</string>
 </resources>

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.clockapp.WorldTime.FragmentWorldTime;
+
 public class AdapterFragmentViewPager extends FragmentStateAdapter {
     public AdapterFragmentViewPager(@NonNull Fragment fragment) {
         super(fragment);

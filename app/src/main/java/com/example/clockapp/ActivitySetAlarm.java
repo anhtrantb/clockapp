@@ -28,7 +28,7 @@ import java.util.List;
 
 public class ActivitySetAlarm extends AppCompatActivity implements  View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterDayOfWeek.onClickDayListener {
 TimePicker timePicker;
-TextView mTvExit, mTvSave, mTvRingtone, mTvVibrate, mTvPause;
+TextView mTvExit, mTvSave, mTvRingtone, mTvVibrate, mTvPause,mTvDateChoice;
 EditText mEdtTitle;
 ImageButton mDatePicker;
 Switch mSwitchRingtoneSound, mSwitchVibrate, mSwitchPause;
@@ -37,6 +37,7 @@ AdapterDayOfWeek adapterDayOfWeek;
 List<ItemDay> listDay = new ArrayList<>();
 RelativeLayout layoutRingtoneSound, layoutVibrateMode, layoutPauseMode;
 Alarm alarm ;
+boolean isChangeDate = false;
 Time time = new Time();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ Time time = new Time();
         mTvRingtone = findViewById(R.id.tv_ringtone);
         mTvVibrate = findViewById(R.id.tv_vibrate);
         mTvPause = findViewById(R.id.tv_pause);
+        mTvDateChoice = findViewById(R.id.txt_time_choice);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -221,6 +223,7 @@ Time time = new Time();
         }
         return listDayIsChecked;
     }
+    //hiển thị date picker
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void displayDatePicker(){
         Calendar calendar = Calendar.getInstance();
@@ -229,6 +232,8 @@ Time time = new Time();
                     time.setDay(dayOfMonth);
                     time.setMonth(month);
                     time.setYear(year);
+                    isChangeDate = true;
+                    mTvDateChoice.setText(dayOfMonth+"/"+(month+1)+"/"+year);
                 },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
         datePickerDialog.show();
     }
@@ -255,9 +260,11 @@ Time time = new Time();
         if(compareTime(timePicker.getHour(),timePicker.getMinute(),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE))!=1){
             calendar.add(Calendar.DAY_OF_YEAR,1);
         }
-        time.setYear(calendar.get(Calendar.YEAR));
-        time.setMonth(calendar.get(Calendar.MONTH));
-        time.setDay(calendar.get(Calendar.DATE));
+        if(!isChangeDate) {
+            time.setYear(calendar.get(Calendar.YEAR));
+            time.setMonth(calendar.get(Calendar.MONTH));
+            time.setDay(calendar.get(Calendar.DATE));
+        }
         time.setDayOfWeek(getStringDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
     }
     public String getStringDayOfWeek(int i){
