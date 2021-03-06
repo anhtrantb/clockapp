@@ -7,7 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
 
-    tools:context=".FragmentStopWatch">
+    tools:context=".Fragment.FragmentStopWatch">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

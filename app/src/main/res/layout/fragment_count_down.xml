@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_f2f2f2"
-    tools:context=".FragmentCountDown">
+    tools:context=".Fragment.FragmentCountDown">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"

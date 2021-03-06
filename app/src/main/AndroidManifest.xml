@@ -9,12 +9,12 @@
         android:roundIcon="@drawable/ic_clock"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClockApp">
-        <activity android:name=".ActivitySetting"></activity>
-        <activity android:name=".ActivityVibrateMode" />
-        <activity android:name=".ActivityRingtoneSound" />
-        <activity android:name=".ActivityPauseMode" />
-        <activity android:name=".ActivitySetAlarm" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.ActivitySetting"></activity>
+        <activity android:name=".Activity.ActivityVibrateMode" />
+        <activity android:name=".Activity.ActivityRingtoneSound" />
+        <activity android:name=".Activity.ActivityPauseMode" />
+        <activity android:name=".Activity.ActivitySetAlarm" />
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,9 +22,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".service.AlarmBroadcastReceiver"/>
-        <receiver android:name=".service.BrStopAlarmService"/>
-        <receiver android:name=".service.BrStopCountService"/>
+        <receiver android:name=".Broadcast.AlarmBroadcastReceiver"/>
+        <receiver android:name=".Broadcast.BrStopAlarmService"/>
+        <receiver android:name=".Broadcast.BrStopCountService"/>
 
         <service android:name=".service.AlarmService"/>
         <service android:name=".service.ServiceCountTime"/>
