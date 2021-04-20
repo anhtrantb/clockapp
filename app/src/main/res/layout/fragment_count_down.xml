@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_f2f2f2"
     tools:context=".Fragment.FragmentCountDown">
 
     <androidx.appcompat.widget.Toolbar
@@ -12,7 +11,6 @@
         app:popupTheme="@style/popupMenuStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
@@ -175,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/bg_button"
-            android:backgroundTint="@color/blue_btn"
+            app:backgroundTint="@color/second_blue"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/bat_dau"

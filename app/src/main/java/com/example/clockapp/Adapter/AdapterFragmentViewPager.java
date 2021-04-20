@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.clockapp.Fragment.FragmentAlarm;
 import com.example.clockapp.Fragment.FragmentCountDown;
 import com.example.clockapp.Fragment.FragmentStopWatch;
+import com.example.clockapp.Fragment.FragmentUtility;
 import com.example.clockapp.WorldTime.FragmentWorldTime;
 
 public class AdapterFragmentViewPager extends FragmentStateAdapter {
@@ -19,9 +20,9 @@ public class AdapterFragmentViewPager extends FragmentStateAdapter {
         switch (position){
             //khởi tạo fragment cho mỗi trang
             case 0: return FragmentAlarm.getInstance();
-            case 1: return FragmentWorldTime.getInstance();
-            case 2: return FragmentStopWatch.getInstance();
-            case 3: return FragmentCountDown.getInstance();
+            case 1: return FragmentStopWatch.getInstance();
+            case 2: return FragmentCountDown.getInstance();
+            case 3: return FragmentWorldTime.getInstance();
             default:return null;
         }
     }

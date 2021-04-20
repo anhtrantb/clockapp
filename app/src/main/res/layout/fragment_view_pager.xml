@@ -16,12 +16,13 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:background="@color/background"
+        android:background="@color/second_blue"
         android:layout_height="wrap_content"
         app:tabTextAppearance="@style/tab_layout"
         app:tabIndicatorColor="@android:color/transparent"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/tab_text_select"
-        app:tabTextColor="@color/tab_text_normal" />
+        app:tabMode="fixed"
+        app:tabIconTint="@color/white"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/white_trans_55" />
 
 </LinearLayout>

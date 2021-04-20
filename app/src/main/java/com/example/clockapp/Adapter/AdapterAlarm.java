@@ -64,10 +64,10 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
         holder.mSw_setAlarm.setVisibility(View.GONE);
         if(mSelectedItemsIds.get(currentPos)){
             holder.mImgSelectAlarm.setBackgroundResource(R.drawable.ic_check);
-            holder.layoutItemAlarm.setBackground(context.getDrawable(R.drawable.bg_round_blue_light));
+//            holder.layoutItemAlarm.setBackground(context.getDrawable(R.drawable.bg_round_white));
         }else{
             holder.mImgSelectAlarm.setBackgroundResource(R.drawable.ic_check_none);
-            holder.layoutItemAlarm.setBackground(context.getDrawable(R.drawable.bg_round_white));
+//            holder.layoutItemAlarm.setBackground(context.getDrawable(R.drawable.bg_round_white));
         }
     }
     //trạng thái bình thường
@@ -118,7 +118,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
         Switch mSw_setAlarm;
         ImageButton mImgSelectAlarm;
         RelativeLayout layoutItemAlarm;
-        final float  alphaTextView = 0.35f;
+        final float  alphaTextView = 0.5f;
         ItemAlarmListener mListener;
         public ViewHolder(@NonNull View itemView, ItemAlarmListener mListener) {
             super(itemView);

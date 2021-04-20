@@ -2,7 +2,7 @@
     <string name="app_name">ClockApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="alarm">Chuông báo</string>
+    <string name="alarm">Báo thức</string>
     <string name="world_time">Giờ thế giới</string>
     <string name="stop_watch">Bấm giờ</string>
     <string name="count_down">Đếm giờ</string>
@@ -55,4 +55,5 @@
     <string name="add_time_count">Thêm bộ đếm giờ đặt sẵn</string>
     <string name="hien_thi_thoi_tiet">Hiển thị thời tiết </string>
     <string name="note_rung_voi_chuong_bao">Chuông báo và đếm giờ sẽ rung nếu điện thoại của bạn được đặt thành tắt âm hoăc rung. Bạn vẫn sẽ nghe thấy chuông báo khi điện thoại của bạn được đặt thành âm thanh.</string>
+    <string name="utility">Tiện ích</string>
 </resources>

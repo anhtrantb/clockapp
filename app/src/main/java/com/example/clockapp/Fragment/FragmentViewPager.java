@@ -68,10 +68,14 @@ public class FragmentViewPager extends Fragment {
             (tab, position) -> {
                 switch (position){
                     //đặt tên cho từng tab
-                    case 0:tab.setText(getString(R.string.alarm));break;
-                    case 1:tab.setText(getString(R.string.world_time));break;
-                    case 2:tab.setText(getString(R.string.stop_watch));break;
-                    case 3:tab.setText(getString(R.string.count_down));break;
+                    case 0:tab.setText(getString(R.string.alarm));
+                        tab.setIcon(R.drawable.ic_alarm); break;
+                    case 1:tab.setText(getString(R.string.stop_watch));
+                        tab.setIcon(R.drawable.ic_stopwatch);break;
+                    case 2:tab.setText(getString(R.string.count_down));
+                        tab.setIcon(R.drawable.ic_hourglass);break;
+                    case 3:tab.setText(getString(R.string.utility));
+                        tab.setIcon(R.drawable.ic_util);break;
                     default: return;
                 }
             }

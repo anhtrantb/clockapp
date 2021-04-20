@@ -76,7 +76,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     public void onRowSelect(RecyclerView.ViewHolder viewHolder) {
         if(viewHolder instanceof Adapter.ViewHolder){
             Adapter.ViewHolder holder = (ViewHolder) viewHolder;
-            holder.layout.setBackgroundColor(Color.parseColor("#526df7"));
+            holder.layout.setBackgroundColor(Color.parseColor("#0e5375"));
         }
     }
 
@@ -84,7 +84,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     public void onRowClear(RecyclerView.ViewHolder viewHolder) {
         if(viewHolder instanceof Adapter.ViewHolder){
             Adapter.ViewHolder holder = (ViewHolder) viewHolder;
-            holder.layout.setBackgroundColor(Color.WHITE);
+            holder.layout.setBackgroundColor(Color.parseColor("#0e5375"));
         }
     }
 
