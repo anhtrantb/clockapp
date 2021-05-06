@@ -1,11 +1,11 @@
 package com.example.clockapp.Object;
 
-import android.icu.util.Calendar;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Time implements Serializable {
@@ -24,6 +24,12 @@ public class Time implements Serializable {
     public Time(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
+    }
+
+    public Time(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
     }
 
     public Time(String name, int hour, int minute, int second) {
@@ -125,6 +131,14 @@ public class Time implements Serializable {
                     String.format("%02d", minutes) + " : "
                     + String.format("%02d", seconds)));
         }
+    }
+    public static Time getCurrentTime(){
+        Time timeCurrent = new Time();
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        timeCurrent.setDay(calendar.get(java.util.Calendar.DATE));
+        timeCurrent.setMonth(calendar.get(java.util.Calendar.MONTH));
+        timeCurrent.setYear(calendar.get(Calendar.YEAR));
+        return  timeCurrent;
     }
 
 }

@@ -104,8 +104,8 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
             float percentage = ((float) Math.abs(verticalOffset) / appBarLayout1.getTotalScrollRange());
             linearCollapsing.setAlpha(1- 2 * percentage);
-            if(percentage>0.8) mtoolbar.setBackgroundColor(getContext().getResources().getColor(R.color.start_color));
-            else mtoolbar.setBackgroundColor(getContext().getResources().getColor(R.color.transperant));;
+            if(percentage>0.5) mtoolbar.setBackgroundColor(getContext().getResources().getColor(R.color.start_color));
+            else mtoolbar.setBackgroundColor(getContext().getResources().getColor(R.color.transperant));
         });
         if(getDataSaved()!=null) listAlarm = getDataSaved();
         else listAlarm = new ArrayList<>();

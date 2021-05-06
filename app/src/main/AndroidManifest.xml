@@ -16,6 +16,8 @@
         <activity android:name=".Activity.ActivityPauseMode" />
         <activity android:name=".Activity.ActivitySetAlarm" />
         <activity android:name=".Activity.LockScreenActivity"/>
+        <activity android:name=".Activity.WorldTimeActivity"/>
+        <activity android:name=".Activity.CountDayActivity"/>
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
     tools:context=".Fragment.FragmentUtility">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
+        android:id="@+id/tv_world_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="giờ thế giới"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp" />
+    <TextView
+        android:id="@+id/tv_count_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="đếm ngày"
         android:textColor="#FFFFFF"
         android:textSize="36sp" />
 
-</FrameLayout>
+</LinearLayout>

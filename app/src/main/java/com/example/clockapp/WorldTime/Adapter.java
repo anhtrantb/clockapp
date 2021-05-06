@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clockapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements ItemTouchListener {
-    ArrayList<String> listTime;
+    List<CountryUtil.CountryModel> list;
     StartDragListener startDragListener;
-    public Adapter(ArrayList<String> listTime,StartDragListener startDragListener) {
-        this.listTime = listTime;
+    public Adapter(List<CountryUtil.CountryModel> list,StartDragListener startDragListener) {
+        this.list = list;
         this.startDragListener = startDragListener;
     }
 
@@ -36,7 +39,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvTime.setText(listTime.get(position));
+        holder.tvCountry.setText(list.get(position).getName());
+        holder.tvCity.setText(list.get(position).getcity());
+        holder.tvTime.setText(getTimeFromTimeZone(list.get(position).getTimeGmt()));
         holder.imvMove.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -49,18 +54,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
 
     @Override
     public int getItemCount() {
-        return listTime.size();
+        return list.size();
     }
 
     @Override
     public void onRowMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(listTime, i, i + 1);
+                Collections.swap(list, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(listTime, i, i - 1);
+                Collections.swap(list, i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
@@ -89,14 +94,29 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        TextView tvTime;
+        TextView tvCountry, tvCity, tvTime;
         ImageView imvMove;
         RelativeLayout layout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvCountry = itemView.findViewById(R.id.tv_country);
+            tvCity = itemView.findViewById(R.id.tv_city);
             tvTime = itemView.findViewById(R.id.tv_time);
             imvMove = itemView.findViewById(R.id.imv_move);
             layout = itemView.findViewById(R.id.layout);
         }
+    }
+    public void updateList(List<CountryUtil.CountryModel> listToUpdate){
+        list.clear();
+        list.addAll(listToUpdate);
+        notifyDataSetChanged();
+    }
+    private  String getTimeFromTimeZone(String gmt){
+        java.util.TimeZone timeZone= java.util.TimeZone.getTimeZone(gmt);
+        Calendar calendar = Calendar.getInstance(timeZone);
+        return String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" +
+                String.format("%02d", calendar.get(Calendar.MINUTE)) +" "+
+                calendar.get(Calendar.DATE)+"/"+
+                (calendar.get(Calendar.MONTH)+1);
     }
 }

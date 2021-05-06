@@ -30,5 +30,5 @@
 <!--    bảng màu xanh lam -->
     <color name="start_color">#009da3</color>
     <color name="end_color">#0e5375</color>
-    <color name="item_background">#c26d17</color>
+    <color name="item_background">#cea983</color>
 </resources>

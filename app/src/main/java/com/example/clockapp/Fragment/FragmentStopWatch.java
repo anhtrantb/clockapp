@@ -30,11 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FragmentStopWatch extends Fragment implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
+public class FragmentStopWatch extends Fragment implements View.OnClickListener {
 Button btnStart, btnRestartClick, btnPauseResume;
 TextView tvCountTime,tvSubStopTime;
 LinearLayout layoutCountTime;
-Toolbar toolbar;
 Handler handler = new Handler(Looper.getMainLooper());
 final private long delayMillis = 100l;
 
@@ -63,11 +62,6 @@ boolean isStopWatch = false;//trạng thái đang bấm giờ
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_stop_watch, container, false);
         initView(view);
-        //toolbar
-        toolbar.inflateMenu(R.menu.menu_toolbar);
-        toolbar.getMenu().findItem(R.id.ic_delete).setVisible(false);
-        toolbar.getMenu().findItem(R.id.ic_add).setVisible(false);
-        toolbar.setOnMenuItemClickListener(this);
         btnStart.setOnClickListener(this);
         btnRestartClick.setOnClickListener(this);
         btnPauseResume.setOnClickListener(this);
@@ -85,7 +79,6 @@ boolean isStopWatch = false;//trạng thái đang bấm giờ
         layoutCountTime = view.findViewById(R.id.layout_count_time);
         tvSubStopTime = view.findViewById(R.id.tv_sub_stoptime);
         recycleStopTime = view.findViewById(R.id.recycle_stop_time);
-        toolbar = view.findViewById(R.id.toolbar);
     }
     @Override
     public void onClick(View v) {
@@ -204,14 +197,4 @@ boolean isStopWatch = false;//trạng thái đang bấm giờ
         tvCountTime.setText("00:00.00");
     }
 
-    //click menu trong toolbar
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        if(item.getItemId()==R.id.ic_setting){
-            //chuyển tới màn cài đặt
-            Intent intent = new Intent(getActivity(), ActivitySetting.class);
-            startActivity(intent);
-        }
-        return false;
-    }
 }

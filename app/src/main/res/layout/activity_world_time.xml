@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/input_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập tên quốc gia/ Thành phố"
+        android:paddingHorizontal="10dp"
+        android:drawableRight="@drawable/ic_search"
+        android:inputType="textPersonName"
+        android:layout_marginBottom="10dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_world_time"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

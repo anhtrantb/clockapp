@@ -74,8 +74,10 @@ public class FragmentViewPager extends Fragment {
                         tab.setIcon(R.drawable.ic_stopwatch);break;
                     case 2:tab.setText(getString(R.string.count_down));
                         tab.setIcon(R.drawable.ic_hourglass);break;
-                    case 3:tab.setText(getString(R.string.utility));
-                        tab.setIcon(R.drawable.ic_util);break;
+                    case 3:tab.setText("Giờ TG");
+                        tab.setIcon(R.drawable.ic_world);break;
+                    case 4:tab.setText("Đếm ngày");
+                        tab.setIcon(R.drawable.ic_count_calendar);break;
                     default: return;
                 }
             }
