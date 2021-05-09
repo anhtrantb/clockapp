@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.clockapp">
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_clock"
@@ -10,14 +12,10 @@
         android:roundIcon="@drawable/ic_clock"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClockApp">
-        <activity android:name=".Activity.ActivitySetting"></activity>
-        <activity android:name=".Activity.ActivityVibrateMode" />
         <activity android:name=".Activity.ActivityRingtoneSound" />
         <activity android:name=".Activity.ActivityPauseMode" />
         <activity android:name=".Activity.ActivitySetAlarm" />
         <activity android:name=".Activity.LockScreenActivity"/>
-        <activity android:name=".Activity.WorldTimeActivity"/>
-        <activity android:name=".Activity.CountDayActivity"/>
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

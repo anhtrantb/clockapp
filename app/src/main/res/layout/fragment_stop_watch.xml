@@ -23,7 +23,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/roboto_light"
             android:text="00:00.00"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="54sp" />
 
         <TextView

@@ -26,5 +26,4 @@
         app:tabIconTint="@color/white"
         app:tabSelectedTextColor="@color/white"
         app:tabTextColor="@color/white_trans_55" />
-
 </LinearLayout>

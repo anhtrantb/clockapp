@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class PauseMode implements Serializable {
     String timeName;
-    int timeValue;
+    int timeValue;//lặp lại mỗi bao nhiêu lâu
     String repeatName;
-    int repeatValue;
+    int repeatValue;//số lần lặp lại
     boolean turnOn = false;
     public String getTimeName() {
         return timeName;

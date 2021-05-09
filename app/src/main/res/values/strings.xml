@@ -36,7 +36,7 @@
         <item>5 phút</item>
         <item>10 phút</item>
         <item>15 phút</item>
-        <item>30 phút</item>
+        <item>20 phút</item>
     </string-array>
     <string-array name="list_time_repeat">
         <item>3 lần</item>

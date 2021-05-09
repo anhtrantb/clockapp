@@ -8,6 +8,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         app:title="Tạm dừng"
+        app:titleTextColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
     <RelativeLayout
@@ -15,20 +16,20 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center_vertical">
+        android:layout_height="70dp">
         <TextView
             android:id="@+id/tv_status_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:textSize="20sp"
             android:text="Tắt"/>
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/sw_set_pause"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/custom_switch"/>
+            android:layout_height="wrap_content" />
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/layout_set_pause_mode"
@@ -53,7 +54,7 @@
             android:showDividers="middle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/item_background_white"
+            android:backgroundTint="@color/item_background"
             android:background="@drawable/bg_round_corner">
         </RadioGroup>
         <TextView
@@ -70,7 +71,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/item_background_white"
+            android:backgroundTint="@color/item_background"
             android:background="@drawable/bg_round_corner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

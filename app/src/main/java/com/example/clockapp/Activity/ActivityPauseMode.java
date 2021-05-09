@@ -20,10 +20,11 @@ import android.widget.TextView;
 
 import com.example.clockapp.Object.PauseMode;
 import com.example.clockapp.R;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class ActivityPauseMode extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     Toolbar toolbar;
-    Switch swSetPause;
+    SwitchMaterial swSetPause;
     RelativeLayout layoutSwitch;
     RadioGroup groupTimePause, groupTimeRepeat;
     LinearLayout layoutSetPauseMode;
@@ -132,7 +133,7 @@ public class ActivityPauseMode extends AppCompatActivity implements CompoundButt
             case 0: return 5;
             case 1: return 10;
             case 2: return 15;
-            case 3 : return 30;
+            case 3 : return 20;
             default: return -1;
         }
     }

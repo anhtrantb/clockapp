@@ -15,44 +15,46 @@ import java.util.Calendar;
 import java.util.Random;
 
 public class Alarm implements Serializable {
-    int id;
+    int id = 0;
     Time time;//thời gian
-    ArrayList<String> listDaySet;//ngày thiết lập
     PauseMode pauseMode;//chế độ dừng
     SoundMode soundMode;//chế độ âm thanh
-    VibrateMode vibrateMode;//chế độ rung
+    //thời gian hàng ngày
+    boolean Monday  = false;
+    boolean Tuesday = false;
+    boolean Wednesday = false;
+    boolean Thursday = false;
+    boolean Friday = false;
+    boolean Saturday = false;
+    boolean Sunday = false;
+    //---------------------------
+    boolean vibrate = true;
     String name = "";//tên báo thức
     boolean TurnOn = true;//được bật hay không
     boolean select = false;
+    boolean quiz = false;
+
+    public boolean isQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(boolean quiz) {
+        this.quiz = quiz;
+    }
 
     public Alarm() {
         this.id = getRandom();
     }
 
-    public void schedule(Context context) {
-        //thiết lập báo thức
-        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
-        intent.putExtra("uri",soundMode.getSoundUri());
-//          intent.putExtra()......
-        Toast.makeText(context, "Chuông báo được đặt cho " + Time.getTimeStringFromMilliseconds(getTimeLeft()), Toast.LENGTH_SHORT).show();
-        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, id, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(
-                AlarmManager.RTC_WAKEUP,
-                Calendar.getInstance().getTimeInMillis()+ getTimeLeft(),
-                alarmPendingIntent
-        );
+    public int getId() {
+        return id;
     }
 
-    //hủy alarm
-    public void cancelAlarm(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
-        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, id, intent, 0);
-        alarmManager.cancel(alarmPendingIntent);
-        context.stopService(new Intent(context, AlarmService.class));
-        this.TurnOn = false;
+    public void setId(int id) {
+        this.id = id;
     }
+
+
     //get set
 
     public Time getTime() {
@@ -61,14 +63,6 @@ public class Alarm implements Serializable {
 
     public void setTime(Time time) {
         this.time = time;
-    }
-
-    public ArrayList<String> getListDaySet() {
-        return listDaySet;
-    }
-
-    public void setListDaySet(ArrayList<String> listDaySet) {
-        this.listDaySet = listDaySet;
     }
 
     public PauseMode getPauseMode() {
@@ -86,15 +80,6 @@ public class Alarm implements Serializable {
     public void setSoundMode(SoundMode soundMode) {
         this.soundMode = soundMode;
     }
-
-    public VibrateMode getVibrateMode() {
-        return vibrateMode;
-    }
-
-    public void setVibrateMode(VibrateMode vibrateMode) {
-        this.vibrateMode = vibrateMode;
-    }
-
     public String getName() {
         return name;
     }
@@ -120,8 +105,8 @@ public class Alarm implements Serializable {
     }
 
     public int getRandom() {
-        Random random = new Random(10000);
-        return random.nextInt();
+        //tự động sinh ra id
+        return new Random().nextInt(Integer.MAX_VALUE)+10;
     }
 
     public long getTimeLeft() {
@@ -129,5 +114,69 @@ public class Alarm implements Serializable {
         long current = calendar.getTimeInMillis();
         calendar.set(time.getYear(), time.getMonth(), time.getDay(), time.getHour(), time.getMinute());
         return calendar.getTimeInMillis() - current;
+    }
+
+    public boolean isMonday() {
+        return Monday;
+    }
+
+    public void setMonday(boolean monday) {
+        Monday = monday;
+    }
+
+    public boolean isTuesday() {
+        return Tuesday;
+    }
+
+    public void setTuesday(boolean tuesday) {
+        Tuesday = tuesday;
+    }
+
+    public boolean isWednesday() {
+        return Wednesday;
+    }
+
+    public void setWednesday(boolean wednesday) {
+        Wednesday = wednesday;
+    }
+
+    public boolean isThursday() {
+        return Thursday;
+    }
+
+    public void setThursday(boolean thursday) {
+        Thursday = thursday;
+    }
+
+    public boolean isFriday() {
+        return Friday;
+    }
+
+    public void setFriday(boolean friday) {
+        Friday = friday;
+    }
+
+    public boolean isSaturday() {
+        return Saturday;
+    }
+
+    public void setSaturday(boolean saturday) {
+        Saturday = saturday;
+    }
+
+    public boolean isSunday() {
+        return Sunday;
+    }
+
+    public void setSunday(boolean sunday) {
+        Sunday = sunday;
+    }
+
+    public boolean isVibrate() {
+        return vibrate;
+    }
+
+    public void setVibrate(boolean vibrate) {
+        this.vibrate = vibrate;
     }
 }

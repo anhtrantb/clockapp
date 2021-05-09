@@ -9,7 +9,6 @@ import java.io.Serializable;
 public class SoundMode implements Serializable {
     String soundTitle;
     String soundUri;
-    boolean hasReadLoudTime;
     boolean turnOn = true;
     public static SoundMode getDefault(Context context){
         return RingTone.getFirstSong(context);
@@ -23,20 +22,13 @@ public class SoundMode implements Serializable {
     }
 
     public String getSoundUri() {
-        return soundUri;
+        return soundUri==null?"":soundUri;
     }
 
     public void setSoundUri(String soundUri) {
         this.soundUri = soundUri;
     }
 
-    public boolean isHasReadLoudTime() {
-        return hasReadLoudTime;
-    }
-
-    public void setHasReadLoudTime(boolean hasReadLoudTime) {
-        this.hasReadLoudTime = hasReadLoudTime;
-    }
 
     public boolean isTurnOn() {
         return turnOn;

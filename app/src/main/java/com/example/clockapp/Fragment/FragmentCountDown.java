@@ -35,7 +35,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.clockapp.Activity.ActivitySetting;
 import com.example.clockapp.Adapter.AdapterCountTime;
 import com.example.clockapp.R;
 import com.example.clockapp.Object.Time;
@@ -93,7 +92,6 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
         btnStop.setOnClickListener(this);
         btnPauseResume.setOnClickListener(this);
         toolbar.inflateMenu(R.menu.menu_toolbar);
-        toolbar.getMenu().findItem(R.id.ic_delete).setVisible(false);
         toolbar.setOnMenuItemClickListener(this);
         //recycle
         listAvailableCount = new ArrayList<>();
@@ -202,14 +200,8 @@ public class FragmentCountDown extends Fragment implements View.OnClickListener,
 //sự kiện cho từng icon trên thanh toolbar
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.ic_add:
+        if (item.getItemId()==R.id.ic_add) {
                 displayDialog();
-                break;
-            case R.id.ic_setting:
-                Intent intent = new Intent(getActivity(), ActivitySetting.class);
-                startActivity(intent);
-                break;
         }
         return false;
     }

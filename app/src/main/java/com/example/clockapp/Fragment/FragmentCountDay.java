@@ -119,7 +119,6 @@ public class FragmentCountDay extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 parent.getSelectedItem().toString();
-                Log.e("tag",parent.getSelectedItem().toString());
             }
         });
         return  view;

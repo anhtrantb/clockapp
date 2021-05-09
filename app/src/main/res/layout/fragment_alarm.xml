@@ -51,21 +51,12 @@
                     android:id="@+id/title_collapsingbar"
                     android:fontFamily="@font/roboto_light"
                     android:textSize="30sp"
+                    android:layout_marginHorizontal="20dp"
                     android:textColor="@color/white"
-                    android:maxWidth="250dp"
                     android:textAlignment="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_alarm" />
-                <TextView
-
-                    android:fontFamily="@font/roboto_light"
-                    android:id="@+id/title_collapsingbar_time"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hello" />
+                    android:text="Ngủ đủ giấc để có một cơ thể khỏe mạnh" />
 
             </LinearLayout>
 

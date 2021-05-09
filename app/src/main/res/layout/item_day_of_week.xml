@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:id="@+id/tv_day_of_week"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="14sp"
         android:text="monday"
         android:paddingLeft="4dp"

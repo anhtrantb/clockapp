@@ -31,7 +31,6 @@ import java.util.Set;
 public class ActivityRingtoneSound extends AppCompatActivity implements AdapterSelectItem.OnItemRadioCheck {
     Toolbar toolbar;
     RecyclerView recycleRingtone;
-    Switch swReadLoudTime;
     List<ItemSelect> listRingtone = new ArrayList<>();
     AdapterSelectItem  adapterSelectItem;
     MediaPlayer mediaPlayer= new MediaPlayer();
@@ -57,7 +56,6 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
     public void initView(){
         toolbar = findViewById(R.id.toolbar);
         recycleRingtone = findViewById(R.id.recycle_ringtone);
-        swReadLoudTime = findViewById(R.id.sw_read_loud_time);
     }
 
     public void getListRingtone(){
@@ -116,7 +114,6 @@ public class ActivityRingtoneSound extends AppCompatActivity implements AdapterS
         Intent intent = new Intent();
         soundMode.setSoundTitle(listRingtone.get(getPositionChecked()).getContent());
         soundMode.setSoundUri(listRingtone.get(getPositionChecked()).getUri());
-        soundMode.setHasReadLoudTime(swReadLoudTime.isChecked());
         intent.putExtra("sound_mode",soundMode);
         setResult(Activity.RESULT_OK,intent);
         finish();

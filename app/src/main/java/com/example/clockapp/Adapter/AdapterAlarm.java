@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.clockapp.Object.Alarm;
+import com.example.clockapp.Object.Util;
 import com.example.clockapp.R;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Alarm alarm = listItem.get(position);
-        holder.mTx_Time.setText(alarm.getTime().getHour()+":"+alarm.getTime().getMinute());
+        holder.mTx_Time.setText(alarm.getTime().getTimeHourMinutes());
         holder.mTx_Date.setText(alarm.getTime().displayDate());
         holder.mSw_setAlarm.setChecked(alarm.isTurnOn());
         holder.mTvAlarmName.setText(alarm.getName());
@@ -64,10 +66,8 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
         holder.mSw_setAlarm.setVisibility(View.GONE);
         if(mSelectedItemsIds.get(currentPos)){
             holder.mImgSelectAlarm.setBackgroundResource(R.drawable.ic_check);
-//            holder.layoutItemAlarm.setBackground(context.getDrawable(R.drawable.bg_round_white));
         }else{
             holder.mImgSelectAlarm.setBackgroundResource(R.drawable.ic_check_none);
-//            holder.layoutItemAlarm.setBackground(context.getDrawable(R.drawable.bg_round_white));
         }
     }
     //trạng thái bình thường
@@ -115,7 +115,7 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTx_Time,mTx_Date, mTvAlarmName;
-        Switch mSw_setAlarm;
+        SwitchMaterial mSw_setAlarm;
         ImageButton mImgSelectAlarm;
         RelativeLayout layoutItemAlarm;
         final float  alphaTextView = 0.5f;
@@ -167,9 +167,11 @@ public class AdapterAlarm extends RecyclerView.Adapter<AdapterAlarm.ViewHolder> 
                 public void onClick(View v) {
                     //đặt báo thức
                     if(mSw_setAlarm.isChecked()){
-                        listItem.get(getAdapterPosition()).schedule(context);
+                        Util.scheduleAlarm(context,listItem.get(getAdapterPosition()));
+                        listItem.get(getAdapterPosition()).setTurnOn(true);
                     }else{
-                        listItem.get(getAdapterPosition()).cancelAlarm(context);
+                        Util.cancelAlarm(context,listItem.get(getAdapterPosition()).getId());
+                        listItem.get(getAdapterPosition()).setTurnOn(false);
                     }
                 }
             });

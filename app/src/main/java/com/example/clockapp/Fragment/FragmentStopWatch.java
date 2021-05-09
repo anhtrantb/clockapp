@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.clockapp.Activity.ActivitySetting;
 import com.example.clockapp.Adapter.AdapterStopTime;
 import com.example.clockapp.Object.ItemStopTime;
 import com.example.clockapp.R;

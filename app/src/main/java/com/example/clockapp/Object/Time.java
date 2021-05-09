@@ -1,12 +1,14 @@
 package com.example.clockapp.Object;
 
 import android.os.Build;
+import android.util.TimeUtils;
 
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Time implements Serializable {
     private String name;
@@ -90,7 +92,7 @@ public class Time implements Serializable {
     }
 
     public String getDayOfWeek() {
-        return dayOfWeek;
+        return dayOfWeek==null?"":dayOfWeek;
     }
 
     public String getName() {
@@ -105,6 +107,10 @@ public class Time implements Serializable {
         return String.format("%02d", hour) + ":" +
                 String.format("%02d", minute) + ":" + String.format("%02d", second);
     }
+    public String getTimeHourMinutes(){
+        return String.format("%02d", hour) + ":" +
+                String.format("%02d", minute);
+    }
 
     public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
@@ -115,6 +121,9 @@ public class Time implements Serializable {
     }
 
     public static String getTimeStringFromMilliseconds(long milliseconds) {
+//        long hour = TimeUnit.MILLISECONDS.toHours(milliseconds);
+//        long minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
+//        long seconds = TimeUnit.MILLISECONDS.toSeconds(milliseconds);
         //trả về định dạng hh:mm:ss nếu giờ >0
         // trả về mm:ss nếu giờ = 0;
         int seconds = (int) (milliseconds / 1000);//tổng số giây

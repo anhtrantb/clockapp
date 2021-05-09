@@ -41,9 +41,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="djsfha"
-        android:paddingTop="5dp"
+        android:layout_marginTop="10dp"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxEms="30"
+        android:maxLines="1"
+        android:textSize="12sp"
         android:layout_below="@+id/tx_time"/>
     </RelativeLayout>
     <LinearLayout
@@ -61,7 +64,7 @@
             android:paddingRight="15dp"
             android:text="TextView" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/sw_setAlarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

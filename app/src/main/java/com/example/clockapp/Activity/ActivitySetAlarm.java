@@ -17,7 +17,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -30,21 +29,21 @@ import com.example.clockapp.R;
 import com.example.clockapp.Object.SoundMode;
 import com.example.clockapp.Utils.StaticName;
 import com.example.clockapp.Object.Time;
-import com.example.clockapp.Object.VibrateMode;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ActivitySetAlarm extends AppCompatActivity implements  View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterDayOfWeek.onClickDayListener {
 TimePicker timePicker;
-TextView mTvExit, mTvSave, mTvRingtone, mTvVibrate, mTvPause,mTvDateChoice;
+TextView mTvExit, mTvSave, mTvRingtone, mTvVibrate, mTvPause,mTvDateChoice, mTvQuiz;
 EditText mEdtTitle;
 ImageButton mDatePicker;
-Switch mSwitchRingtoneSound, mSwitchVibrate, mSwitchPause;
+SwitchMaterial mSwitchRingtoneSound, mSwitchVibrate, mSwitchPause, mSwQuiz;
 RecyclerView recycleDayOfWeek;
 AdapterDayOfWeek adapterDayOfWeek;
 List<ItemDay> listDay = new ArrayList<>();
-RelativeLayout layoutRingtoneSound, layoutVibrateMode, layoutPauseMode;
+RelativeLayout layoutRingtoneSound, layoutPauseMode;
 Alarm alarm ;
 boolean isChangeDate = false;
 Time time = new Time();
@@ -60,11 +59,11 @@ Time time = new Time();
         mDatePicker.setOnClickListener(this);
 
         layoutRingtoneSound.setOnClickListener(this);
-        layoutVibrateMode.setOnClickListener(this);
         layoutPauseMode.setOnClickListener(this);
 
         mSwitchRingtoneSound.setOnCheckedChangeListener(this);
         mSwitchVibrate.setOnCheckedChangeListener(this);
+        mSwQuiz.setOnCheckedChangeListener(this);
         mSwitchPause.setOnCheckedChangeListener(this);
 
         alarm = (Alarm) getIntent().getSerializableExtra("alarm");
@@ -91,15 +90,16 @@ Time time = new Time();
         mSwitchRingtoneSound = findViewById(R.id.sw_ringtone_sound);
         mSwitchPause = findViewById(R.id.sw_pause);
         mSwitchVibrate = findViewById(R.id.sw_vibrate);
+        mSwQuiz = findViewById(R.id.sw_quiz);
         layoutRingtoneSound = findViewById(R.id.layout_ringtone_sound);
         layoutPauseMode = findViewById(R.id.layout_pause_mode);
-        layoutVibrateMode = findViewById(R.id.layout_vibrate_mode);
         recycleDayOfWeek = findViewById(R.id.recycle_day_of_week);
         mEdtTitle = findViewById(R.id.edt_title_alarm);
         //text hiển thị cài đặt
         mTvRingtone = findViewById(R.id.tv_ringtone);
         mTvVibrate = findViewById(R.id.tv_vibrate);
         mTvPause = findViewById(R.id.tv_pause);
+        mTvQuiz = findViewById(R.id.tv_quiz);
         mTvDateChoice = findViewById(R.id.txt_time_choice);
     }
 
@@ -115,12 +115,6 @@ Time time = new Time();
                 Intent intentRingtoneActivity = new Intent(this, ActivityRingtoneSound.class);
                 intentRingtoneActivity.putExtra("sound_mode",alarm.getSoundMode());
                 startActivityForResult(intentRingtoneActivity, StaticName.CODE_SET_RINGTONE);
-                break;
-            case R.id.layout_vibrate_mode:
-                Intent intentVibrateActivity = new Intent(this, ActivityVibrateMode.class);
-                alarm.getVibrateMode().setTurnOn(mSwitchVibrate.isChecked());
-                intentVibrateActivity.putExtra("vibrate_mode",alarm.getVibrateMode());
-                startActivityForResult(intentVibrateActivity, StaticName.CODE_SET_VIBRATE);
                 break;
             case R.id.layout_pause_mode:
                 Intent intentPauseActivity = new Intent(this, ActivityPauseMode.class);
@@ -141,18 +135,19 @@ Time time = new Time();
                 if(mSwitchRingtoneSound.isChecked()){
                     mTvRingtone.setText(alarm.getSoundMode().getSoundTitle());
                 }else mTvRingtone.setText("Tắt");
+                break;
             }
             case R.id.sw_vibrate:{
-                if(mSwitchVibrate.isChecked()){
-                    mTvVibrate.setText(alarm.getVibrateMode().getName());
-                }else mTvVibrate.setText("Tắt");
+                mTvVibrate.setText(mSwitchVibrate.isChecked()?"Bật":"Tắt");
+                break;
             }
             case R.id.sw_pause:{
-                if(mSwitchPause.isChecked()){
-                    mTvPause.setText(alarm.getPauseMode().display());
-                }else{
-                    mTvPause.setText("Tắt");
-                }
+                mTvPause.setText(mSwitchPause.isChecked()?alarm.getPauseMode().display():"Tắt");
+                break;
+            }
+            case R.id.sw_quiz:{
+                mTvQuiz.setText(mSwQuiz.isChecked()?"Bật":"Tắt");
+                break;
             }
         }
     }
@@ -167,15 +162,6 @@ Time time = new Time();
                 alarm.setSoundMode(soundMode);
                 mTvRingtone.setText(soundMode.getSoundTitle());
                 mSwitchRingtoneSound.setChecked(alarm.getSoundMode().isTurnOn());
-            }
-        }
-        else if(requestCode==StaticName.CODE_SET_VIBRATE){
-            if(resultCode == Activity.RESULT_OK && data!=null){
-                //nhận về chế độ rung
-                VibrateMode vibrateMode = (VibrateMode) data.getSerializableExtra("vibrate_mode");
-                alarm.setVibrateMode(vibrateMode);
-                mTvVibrate.setText(alarm.getVibrateMode().getName());
-                mSwitchVibrate.setChecked(alarm.getVibrateMode().isTurnOn());
             }
         }
         else if(requestCode == StaticName.CODE_SET_PAUSE){
@@ -194,9 +180,11 @@ Time time = new Time();
         if(listDay.get(position).isChecked()){
             view.setBackgroundResource(0);
             listDay.get(position).setChecked(false);
+            setWeekDayValue(position,false);
         }else{
             view.setBackgroundResource(R.drawable.round_txt);
             listDay.get(position).setChecked(true);
+            setWeekDayValue(position,true);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -210,10 +198,9 @@ Time time = new Time();
         alarm.setTime(time);
         //các chế độ cài đặt
         alarm.getSoundMode().setTurnOn(mSwitchRingtoneSound.isChecked());
-        alarm.getVibrateMode().setTurnOn(mSwitchVibrate.isChecked());
+        alarm.setVibrate(mSwitchVibrate.isChecked());
+        alarm.setQuiz(mSwQuiz.isChecked());
         alarm.getPauseMode().setTurnOn(mSwitchPause.isChecked());
-        //ngày trong tuần
-        alarm.setListDaySet(getListDayIsChecked());
         //gửi kết quả về màn chính
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("data",alarm);
@@ -223,14 +210,6 @@ Time time = new Time();
         }
         setResult(Activity.RESULT_OK,intent);
         finish();
-    }
-    public ArrayList<String> getListDayIsChecked(){
-        ArrayList<String> listDayIsChecked = new ArrayList<>();
-        for(ItemDay itemDay : listDay){
-            if(itemDay.isChecked())
-                listDayIsChecked.add(itemDay.getDay());
-        }
-        return listDayIsChecked;
     }
     //hiển thị date picker
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -247,12 +226,19 @@ Time time = new Time();
         datePickerDialog.show();
     }
     public void updateData(){
-        mTvRingtone.setText(alarm.getSoundMode().getSoundTitle());
-        mTvVibrate.setText(alarm.getVibrateMode().getName());
+
+        mTvVibrate.setText(alarm.isVibrate()?"Bật":"Tắt");
+        mSwitchVibrate.setChecked(alarm.isVibrate());
+
         mTvPause.setText(alarm.getPauseMode().display());
-        mSwitchRingtoneSound.setChecked(alarm.getSoundMode().isTurnOn());
-        mSwitchVibrate.setChecked(alarm.getVibrateMode().isTurnOn());
+
+        mTvQuiz.setText(alarm.isQuiz()?"Bật":"Tắt");
+        mSwQuiz.setChecked(alarm.isQuiz());
         mSwitchPause.setChecked(alarm.getPauseMode().isTurnOn());
+
+        mSwitchRingtoneSound.setChecked(alarm.getSoundMode().isTurnOn());
+        mTvRingtone.setText(alarm.getSoundMode().getSoundTitle());
+
         mEdtTitle.setText(alarm.getName());
     }
     public int compareTime(int h1, int m1, int h2, int m2){
@@ -285,6 +271,17 @@ Time time = new Time();
             case Calendar.FRIDAY: return "T.6";
             case Calendar.SATURDAY: return "T.7";
             default: return "CN";
+        }
+    }
+    public void setWeekDayValue(int position, boolean value){
+        switch (position){
+            case 0: alarm.setMonday(value); break;
+            case 1: alarm.setTuesday(value); break;
+            case 2: alarm.setWednesday(value); break;
+            case 3: alarm.setThursday(value); break;
+            case 4: alarm.setFriday(value); break;
+            case 5: alarm.setSaturday(value); break;
+            case 6: alarm.setSunday(value); break;
         }
     }
 

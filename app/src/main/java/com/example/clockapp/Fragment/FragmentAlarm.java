@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,15 +32,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.clockapp.Activity.ActivitySetAlarm;
-import com.example.clockapp.Activity.ActivitySetting;
 import com.example.clockapp.Activity.MainActivity;
 import com.example.clockapp.Adapter.AdapterAlarm;
 import com.example.clockapp.Object.Alarm;
 import com.example.clockapp.Object.PauseMode;
+import com.example.clockapp.Object.Time;
+import com.example.clockapp.Object.Util;
 import com.example.clockapp.R;
 import com.example.clockapp.Object.SoundMode;
 import com.example.clockapp.Utils.StaticName;
-import com.example.clockapp.Utils.VibratePattern;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -54,7 +55,7 @@ import java.util.List;
 public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmListener, View.OnClickListener {
     LinearLayout linearCollapsing,linearActionDeleteItem,linearSelectAllItem,layoutActionDelete;
     AppBarLayout appBarLayout;
-    TextView title_collapsingbar_time,title_collapsingbar;
+    TextView title_collapsingbar;
     RecyclerView recyclerViewAlarm;
     Toolbar mtoolbar;
     Menu menuToobar;
@@ -95,8 +96,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         //find view
         initView(view);
         //main
-        title_collapsingbar.setText("Chuông báo sau 18 giờ 1 phút");
-        title_collapsingbar_time.setText("06:00, T.6, 29 Th1");
 
         ((MainActivity) getActivity()).setSupportActionBar(mtoolbar);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.alarm_ring));
@@ -134,17 +133,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 getParentFragment().startActivityForResult(intent, StaticName.CODE_EDIT_ALARM);
                 break;
             }
-            case R.id.ic_delete:{
-                stateSelect();
-                mAdapterAlarm.setSelectState(true);
-                mAdapterAlarm.clearSelect();
-                break;
-            }
-            case R.id.ic_setting:{
-                //chuyển tới màn cài đặt
-                Intent intent = new Intent(getActivity(), ActivitySetting.class);
-                startActivity(intent);
-            }
             case android.R.id.home:
                 mAdapterAlarm.setAllItemCheck();
 
@@ -156,7 +144,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         mtoolbar = view.findViewById(R.id.toolbar);
         appBarLayout = view.findViewById(R.id.app_bar);
         linearCollapsing = view.findViewById(R.id.linear);
-        title_collapsingbar_time = view.findViewById(R.id.title_collapsingbar_time);
         title_collapsingbar = view.findViewById(R.id.title_collapsingbar);
         recyclerViewAlarm = view.findViewById(R.id.recycleview_alarm);
         collapsingToolbarLayout = view.findViewById(R.id.collapsing_tool_bar);
@@ -199,6 +186,7 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         stateSelect();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -210,9 +198,9 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                 listAlarm.set(indexEdit,alarm);
                 mAdapterAlarm.notifyItemChanged(indexEdit);
                 if(listAlarm.get(indexEdit).isTurnOn())
-                    listAlarm.get(indexEdit).schedule(getContext());
+                    Util.scheduleAlarm(getContext(),listAlarm.get(indexEdit));
                 else
-                    listAlarm.get(indexEdit).cancelAlarm(getContext());
+                    Util.cancelAlarm(getContext(),listAlarm.get(indexEdit).getId());
             }else{
                 //thêm báo thức
                 int indexAdd = findDuplicateAlarm(alarm);
@@ -220,11 +208,11 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
                     alarm.setTurnOn(true);
                     listAlarm.add(alarm);
                     mAdapterAlarm.notifyItemInserted(listAlarm.size() - 1);
-                    listAlarm.get(listAlarm.size() - 1).schedule(getContext());
+                    Util.scheduleAlarm(getContext(),listAlarm.get(listAlarm.size() - 1));
                 }else{//nếu trùng
                     listAlarm.get(indexAdd).setTurnOn(true);
                     mAdapterAlarm.notifyItemChanged(indexAdd);
-                    listAlarm.get(indexAdd).schedule(getContext());
+                    Util.scheduleAlarm(getContext(),listAlarm.get(indexAdd));
                 }
             }
         }
@@ -236,7 +224,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         alarm.setName("");
         alarm.setTurnOn(false);
         alarm.setSoundMode(SoundMode.getDefault(getContext()));
-        alarm.setVibrateMode(new VibratePattern().getDefaut());
         alarm.setPauseMode(PauseMode.getDefault());
         return  alarm;
     }
@@ -254,7 +241,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Log.e("tag","back_in_fragment_alarm");
                 if(!mAdapterAlarm.isSelectState())
                     requireActivity().finish();
                 mAdapterAlarm.setSelectState(false);
@@ -291,7 +277,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
     public void stateSelect(){
         linearActionDeleteItem.setVisibility(View.VISIBLE);
         menuToobar.findItem(R.id.ic_add).setVisible(false);
-        menuToobar.findItem(R.id.ic_menu).setVisible(false);
         linearSelectAllItem.setVisibility(View.VISIBLE);
         if(mAdapterAlarm.getSelectedItemsIds().size() == listAlarm.size()){
             imvSelect.setImageResource(R.drawable.ic_check);
@@ -300,7 +285,6 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
             imvSelect.setImageResource(R.drawable.ic_check_none);
         title_collapsingbar.setText("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
         collapsingToolbarLayout.setTitle("Đã chọn "+ mAdapterAlarm.getSelectedItemsIds().size());
-        title_collapsingbar_time.setVisibility(View.GONE);
         tabLayout.setVisibility(View.GONE);
         viewPager.setUserInputEnabled(false);
         //tạo animation cho imv xóa
@@ -311,11 +295,8 @@ public class FragmentAlarm extends Fragment implements AdapterAlarm.ItemAlarmLis
     public void stateUnSelect(){
         linearActionDeleteItem.setVisibility(View.GONE);
         menuToobar.findItem(R.id.ic_add).setVisible(true);
-        menuToobar.findItem(R.id.ic_menu).setVisible(true);
         collapsingToolbarLayout.setTitle("Chuông báo");
-        title_collapsingbar_time.setVisibility(View.VISIBLE);
-        title_collapsingbar.setText("Chuông báo sau 18 giờ 1 phút");
-        title_collapsingbar_time.setText("06:00, T.6, 29 Th1");
+        title_collapsingbar.setText("Ngủ đủ giấc để có một cơ thể khỏe mạnh");
         linearSelectAllItem.setVisibility(View.GONE);
         tabLayout.setVisibility(View.VISIBLE);
         viewPager.setUserInputEnabled(true);

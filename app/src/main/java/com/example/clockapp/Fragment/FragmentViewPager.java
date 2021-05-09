@@ -3,6 +3,7 @@ package com.example.clockapp.Fragment;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +89,7 @@ public class FragmentViewPager extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        FragmentAlarm frag = (FragmentAlarm) getChildFragmentManager().getFragments().get(viewPager.getCurrentItem());
+        FragmentAlarm frag = (FragmentAlarm) getChildFragmentManager().findFragmentByTag("f0");
         frag.onActivityResult(requestCode,resultCode,data);
         super.onActivityResult(requestCode, resultCode, data);
     }
